@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<xml>
-	<TimeLord>
-		<UUID>571eb021-f8a3-4ed6-8a40-433c250c25ff</UUID>
-		<IGN>DarkLordOfChaos</IGN>
-	</TimeLord>
-</xml>
+<?xml version="1.0"?>
+<plugin>
+	<timelord id="1">
+		<uuid>571eb021-f8a3-4ed6-8a40-433c250c25ff</uuid>
+		<ign>DarkLordOfChaos</ign>
+	</timelord>
+</plugin>
