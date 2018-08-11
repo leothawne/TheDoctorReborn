@@ -1,7 +1,11 @@
 <?xml version="1.0"?>
 <plugin>
-	<timelord id="1">
+	<timelord>
 		<uuid>571eb021-f8a3-4ed6-8a40-433c250c25ff</uuid>
 		<ign>DarkLordOfChaos</ign>
+	</timelord>
+	<timelord>
+		<uuid>589eb021-f8a3-35d6-8a40-433c250c25ff</uuid>
+		<ign>DarkLordOfKiah</ign>
 	</timelord>
 </plugin>
