@@ -6,7 +6,7 @@ This plugin is on it's initial versions. It will be very normal to find bugs. Al
 
 ## Notes:
 ```markdown
-I'm still testing the plugin and fixing some bugs.
+The 0.1.0 BETA is now available for download. I'll be waiting for your feedback!
 ```
 
 ## Commands available to everyone:
