@@ -2,6 +2,10 @@
 If you are looking for releases, please visit the [project page](https://dev.bukkit.org/projects/the-doctor-reborn).
 If you are looking for snapshots, please visit the [repository](https://github.com/leothawne/TheDoctorReborn/tree/master/snapshots).
 
+## Need support?
+This plugin is on it's initial versions. It will be very normal to find bugs.
+Always check the console of your server to know if there is something wrong with the plugin. For support or feedback, please contact me: [leothawne@gmail.com](mailto:leothawne@gmail.com)
+
 ## Notes:
 ```markdown
 Work in progress
@@ -37,9 +41,6 @@ Work in progress
 * /rebornadmin reload - Reload all database connections. (Don't use it while someone is regenerating. If it happens, you may need to restart the server!) *This will be removed soon.
 * You can also use '/rebornadmin' as '/rba'.
 ```
-
-## Need support?
-Always check the console of your server to know if there is something wrong with the plugin. For support or feedback, please contact me: [leothawne@gmail.com](mailto:leothawne@gmail.com)
 
 ## Changelog
 ```markdown
