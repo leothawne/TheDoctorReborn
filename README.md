@@ -67,4 +67,4 @@ You are allowed to use/play it on your server. Anything else besides it: All rig
 
 And this also includes:
 - You are not allowed to access the source code or reuse the source code.
-- You are not allowed to copy or sell it to anyone.
+- You are not allowed to copy or sell the project to anyone.
