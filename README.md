@@ -1,9 +1,10 @@
 ## Reborn as a Time Lord victorious!
 
-If you are looking for downloads, please visit the [Project Page](https://dev.bukkit.org/projects/the-doctor-reborn).
+If you are looking for releases, please visit the [project page](https://dev.bukkit.org/projects/the-doctor-reborn).
+If you are looking for snapshots, please visit the [repository](https://github.com/leothawne/TheDoctorReborn/tree/master/snapshots).
 
 ### Commands available to everyone:
-Permission node: TheDoctorReborn.use
+**Permission node**: TheDoctorReborn.use
 ```markdown
 * /reborn - Show all commands for The Doctor Reborn.
 * /reborn version - Show plugin version.
@@ -23,7 +24,7 @@ Permission node: TheDoctorReborn.use
 ```
 
 ### Commands available to administrators:
-Permission node: TheDoctorReborn.admin
+**Permission node:** TheDoctorReborn.admin
 ```markdown
 * /rebornadmin - Show all administration commands for The Doctor Reborn.
 * /rebornadmin version - Check for new updates. (The Doctor Reborn doesn't check for new updates automatically!)
