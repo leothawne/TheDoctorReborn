@@ -8,6 +8,8 @@ But be careful to not get hurt too much!
 ## Looking for downloads?
 Please check the [project page](https://dev.bukkit.org/projects/the-doctor-reborn)!
 
+*Runnable on Bukkit & Spigot*
+
 ## Need support?
 The plugin is on it's initial versions. It will be very normal to find bugs. Always check the console of your server to know if there is something wrong with the plugin. If you want to report a bug, just send me a DM: [@leothawne](https://twitter.com/leothawne).
 
