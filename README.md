@@ -1,5 +1,5 @@
 # Reborn as a Time Lord victorious!
-If you are looking for releases, please visit the [project page](https://dev.bukkit.org/projects/the-doctor-reborn). If you are looking for snapshots, please visit the [repository](https://github.com/leothawne/TheDoctorReborn/tree/master/snapshots).
+If you are looking for releases, please visit the [project page](https://dev.bukkit.org/projects/the-doctor-reborn). If you are looking for betas, please visit the [repository](https://github.com/leothawne/TheDoctorReborn/tree/master/betas).
 
 ## Need support?
 This plugin is on it's initial versions. It will be very normal to find bugs. Always check the console of your server to know if there is something wrong with the plugin. For support/feedback, just send me a DM: [@leothawne](https://twitter.com/leothawne).
