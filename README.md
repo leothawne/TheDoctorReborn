@@ -14,6 +14,11 @@ The 0.1.0 BETA is now available for testing. Please leave your feedback in the c
 
 ```
 
+## Changelog
+```markdown
+* [13/08/2018 07:00 (UTC-03)] 0.1.0 BETA version published.
+```
+
 # Documentation:
 
 ## Commands available to everyone:
@@ -48,7 +53,5 @@ The 0.1.0 BETA is now available for testing. Please leave your feedback in the c
 * You can also use '/rebornadmin' as '/rba'.
 ```
 
-## Changelog
-```markdown
-Work in progress
-```
+# License:
+
