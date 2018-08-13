@@ -62,6 +62,6 @@ The 0.1.0 BETA is now available for testing. Please leave your feedback in the c
 This is not a open source project!
 And this plugin is free for all!
 You are allowed to use/play it on your server. Anything else besides it: All rights reserved to its respective owner (me)!
-And this also means that:
+And this also includes:
 - You are not allowed to access the source code or reuse the source code.
 - You are not allowed to copy or sell it to anyone.
