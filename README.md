@@ -1,12 +1,17 @@
 # Reborn as a Time Lord victorious!
-If you are looking for releases, please visit the [project page](https://dev.bukkit.org/projects/the-doctor-reborn). If you are looking for betas, please visit the [repository](https://github.com/leothawne/TheDoctorReborn/tree/master/betas).
+Looking for releases, betas or alpha versions? Please check the [project page](https://dev.bukkit.org/projects/the-doctor-reborn)!
 
 ## Need support?
-This plugin is on it's initial versions. It will be very normal to find bugs. Always check the console of your server to know if there is something wrong with the plugin. For support/feedback, just send me a DM: [@leothawne](https://twitter.com/leothawne).
+The plugin is on it's initial versions. It will be very normal to find bugs. Always check the console of your server to know if there is something wrong with the plugin. For support/feedback, just send me a DM: [@leothawne](https://twitter.com/leothawne).
 
 ## Notes:
 ```markdown
-The 0.1.0 BETA is now available for download. I'll be waiting for your feedback!
+The 0.1.0 BETA is now available for testing. Please leave feedbacks in the comments on the project page. [Download Now](https://dev.bukkit.org/projects/the-doctor-reborn/files/2602455/download)
+```
+
+## FAQ:
+```markdown
+
 ```
 
 ## Commands available to everyone:
