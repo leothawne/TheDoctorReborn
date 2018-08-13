@@ -17,6 +17,7 @@ I'm still testing the plugin and fixing some bugs.
 * /reborn info - Show your regeneration status.
 * /reborn force - Force your regeneration process.
 * /reborn lock [on/off] - Lock/unlock your regeneration ability.
+* /reborn support - In case you need support.
 * /reborn home - Define your home location (why not build a time lord's temple and use this to set your home location?).
 * You can also use '/reborn' as '/rb'.
 ```
