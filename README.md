@@ -1,10 +1,14 @@
-## Reborn as a Time Lord victorious!
-
+# Reborn as a Time Lord victorious!
 If you are looking for releases, please visit the [project page](https://dev.bukkit.org/projects/the-doctor-reborn).
 If you are looking for snapshots, please visit the [repository](https://github.com/leothawne/TheDoctorReborn/tree/master/snapshots).
 
-### Commands available to everyone:
-**Permission node**: TheDoctorReborn.use
+## Notes:
+```markdown
+Work in progress
+```
+
+## Commands available to everyone:
+### Permission node: TheDoctorReborn.use
 ```markdown
 * /reborn - Show all commands for The Doctor Reborn.
 * /reborn version - Show plugin version.
@@ -23,8 +27,8 @@ If you are looking for snapshots, please visit the [repository](https://github.c
 * This features work with multiple worlds/multiverses.
 ```
 
-### Commands available to administrators:
-**Permission node:** TheDoctorReborn.admin
+## Commands available to administrators:
+### Permission node: TheDoctorReborn.admin
 ```markdown
 * /rebornadmin - Show all administration commands for The Doctor Reborn.
 * /rebornadmin version - Check for new updates. (The Doctor Reborn doesn't check for new updates automatically!)
@@ -34,6 +38,10 @@ If you are looking for snapshots, please visit the [repository](https://github.c
 * You can also use '/rebornadmin' as '/rba'.
 ```
 
-### Need support?
-
+## Need support?
 Always check the console of your server to know if there is something wrong with the plugin. For support or feedback, please contact me: [leothawne@gmail.com](mailto:leothawne@gmail.com)
+
+## Changelog
+```markdown
+Work in progress
+```
