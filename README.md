@@ -4,10 +4,8 @@ Looking for releases, betas or alpha versions? Please check the [project page](h
 ## Need support?
 The plugin is on it's initial versions. It will be very normal to find bugs. Always check the console of your server to know if there is something wrong with the plugin. If you want to report a bug, just send me a DM: [@leothawne](https://twitter.com/leothawne).
 
-## Notes:
-```markdown
+## Note:
 The 0.1.0 BETA is now available for testing. Please leave your feedback in the comments on the project page. [Download Now](https://dev.bukkit.org/projects/the-doctor-reborn/files/2602455/download)
-```
 
 ## FAQ:
 ```markdown
@@ -54,4 +52,4 @@ The 0.1.0 BETA is now available for testing. Please leave your feedback in the c
 ```
 
 # License:
-
+All rights reserved!
