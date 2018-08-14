@@ -16,7 +16,7 @@ The 0.1.0 BETA is now available for testing. Please leave your feedback in the c
 
 ## FAQ:
 ```markdown
-
+Nothing has been reported yet.
 ```
 
 ## Changelog
