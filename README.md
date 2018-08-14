@@ -48,7 +48,7 @@ The 0.1.0 BETA is now available for testing. Please leave your feedback in the c
 ```
 
 ## Commands available to administrators:
-### Permission node: TheDoctorReborn.admin
+### Permission nodes: TheDoctorReborn.use & TheDoctorReborn.admin
 ```markdown
 * /rebornadmin - Show all administration commands for The Doctor Reborn.
 * /rebornadmin version - Check for new updates. (The Doctor Reborn doesn't check for new updates automatically!)
