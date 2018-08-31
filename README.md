@@ -15,7 +15,7 @@ The plugin is on it's initial versions. It will be very normal to find bugs. Alw
 Want to help the project stay alive? Help with your donation: [donate here](https://leothawne.github.io/TheDoctorReborn/#donate)
 
 ## Documentation:
-{Click here to see the documentation](https://dev.bukkit.org/projects/the-doctor-reborn/pages).
+[Click here to see the documentation](https://dev.bukkit.org/projects/the-doctor-reborn/pages).
 
 ## License:
 This is not a open source project!
