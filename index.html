@@ -1,13 +1,16 @@
-<!DOCTYPE HTML>
-<html lang="en-US">
+<!doctype html>
+<html lang="pt-br">
 	<head>
 		<meta charset="utf-8" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-		<!-- Begin Jekyll SEO tag v2.5.0 -->
 		<title>The Doctor Reborn, a Minecraft plugin for RPG based on Doctor Who.</title>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" id="bootstrap-css" />
+		<link rel="stylesheet" href="/navbar.css" />
+		<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
 		<link rel="icon" type="image/jpg" href="/icon.jpg" />
 		<link rel="shortcut icon" type="image/jpg" href="/icon.jpg" />
-		<meta name="generator" content="Jekyll v3.7.3" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<meta property="og:title" content="Reborn as a Time Lord victorious!" />
 		<meta property="og:locale" content="en_US" />
 		<meta name="description" content="A regeneration plugin of Doctor Who for Minecraft." />
@@ -25,82 +28,144 @@
 				"@context": "http://schema.org"
 			}
 		</script>
-		<!-- End Jekyll SEO tag -->
-		<link rel="stylesheet" href="/TheDoctorReborn/assets/css/style.css?v=dbb01fafacb262afc4559f757475a345547f894d" />
-		<script src="/TheDoctorReborn/assets/js/scale.fix.js"></script>
-		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<!--[if lt IE 9]>
 			<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 		<![endif]-->
+		<style>
+			body {
+				background: #000000;
+				color: #ffffff;
+				font-family: Monospace;
+			}
+			header {
+				margin-bottom: 100px;
+			}
+		</style>
 	</head>
 	<body>
-		<div class="wrapper">
-			<header>
-				<h1>The Doctor Reborn</h1>
-				<p>A Minecraft RPG plugin based on Doctor Who.</p>
-				<p class="view"><a href="https://github.com/leothawne/TheDoctorReborn">View the Project on Github <small>leothawne/TheDoctorReborn</small></a></p>
-				<ul>
-					<li><a href="https://dev.bukkit.org/projects/the-doctor-reborn/pages" target="_blank">See the <strong>Docs</strong></a></li>
-					<li><a href="https://twitter.com/leothawne" target="_blank">Follow Me On <strong>Twitter</strong></a></li>
-				</ul>
-			</header>
-			<section>
-				<h1 id="reborn-as-a-time-lord-victorious">Reborn as a Time Lord victorious!</h1>
-				<p>The Doctor Reborn allows you to regenerate instead of dying.</p>
-				<p>Become a powerful Time Lord with 12 lives left for you to enjoy and have fun with your friends.</p>
-				<h2 id="looking-for-downloads">Looking for downloads?</h2>
-				<p>Please check the <a href="https://dev.bukkit.org/projects/the-doctor-reborn" target="_blank">project page</a>!</p>
-				<p><em>Runnable on Bukkit &amp; Spigot</em></p>
-				<h2 id="need-support">Need support?</h2>
-				<p>The plugin is on it’s initial versions. It will be very normal to face with bugs. Always check the server console to know if there is something wrong with the plugin. If you want to report a new bug, you can <a href="https://github.com/leothawne/TheDoctorReborn/issues" target="_blank">report a new issue here</a>.</p>
-				<h2 id="donate">Donate</h2>
-				<p>Want to help the project stay alive? Help with your donation:
-					<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
-						<input type="hidden" name="cmd" value="_s-xclick" />
-						<input type="hidden" name="hosted_button_id" value="WVZ94QWN2Q4HS" />
-						<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!" />
-						<img alt="" border="0" src="https://www.paypalobjects.com/pt_BR/i/scr/pixel.gif" width="1" height="1" />
-					</form>
-				</p>
-				<h2 id="note">Note</h2>
-				<p>The 0.1.0 BETA is now available for testing (not stable and full of bugs too). Please <a href="https://dev.bukkit.org/projects/the-doctor-reborn#comments" target="_blank">leave your feedback</a> in the comments on the project page. <ul><li><a href="https://dev.bukkit.org/projects/the-doctor-reborn/files/2602455/download" target="_blank">Download The Latest Version</a></li></ul></p>
-				<h2 id="faq">FAQ</h2>
-				<div class="language-markdown highlighter-rouge">
-					<div class="highlight">
-						<pre class="highlight">
-							<code>
-
-							</code>
-						</pre>
-					</div>
+		<header>
+			<div class="navbar-wrapper">
+				<div class="container-fluid">
+					<nav class="navbar navbar-fixed-top">
+						<div class="container">
+							<div class="navbar-header">
+								<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+									<span class="sr-only">Menu</span>
+									<span class="icon-bar"></span>
+									<span class="icon-bar"></span>
+									<span class="icon-bar"></span>
+								</button>
+								<a href="/TheDoctorReborn/" target="_top" class="navbar-brand">leothawne/TheDoctorReborn</a>
+							</div>
+							<div id="navbar" class="navbar-collapse collapse">
+								<ul class="nav navbar-nav">
+									<li>
+										<a href="/" target="_top">Início</a>
+									</li>
+									<li class="dropdown active">
+										<a href="#" target="_top" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Projetos <span class="caret"></span></a>
+										<ul class="dropdown-menu">
+											<li class="dropdown active">
+												<a href="/TheDoctorReborn/" target="_blank">The Doctor Reborn</a>
+											</li>
+										</ul>
+									</li>
+									<li>
+										<a href="/twitter.html" target="_blank">Twitter</a>
+									</li>
+									<li>
+										<a href="#" target="_top"><div id="google_translate_element"></div></a>
+										<script type="text/javascript">
+											function googleTranslateElementInit() {
+												new google.translate.TranslateElement({
+													pageLanguage: 'en',
+													layout: google.translate.TranslateElement.InlineLayout.SIMPLE},
+													'google_translate_element'
+												);
+											}
+										</script>
+										<script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</nav>
 				</div>
-				<h2 id="changelog">Changelog</h2>
-				<div class="language-markdown highlighter-rouge">
-					<div class="highlight">
-						<pre class="highlight">
-							<code>
-<span class="p">*</span> <span class="p">[</span><span class="nv">13/08/2018 07:00 (UTC-03)</span><span class="p">]</span> 0.1.0 BETA version published.
-							</code>
-						</pre>
-					</div>
-				</div>
-				<h2 id="documentation">Documentation</h2>
-				<ul><li><a href="https://dev.bukkit.org/projects/the-doctor-reborn/pages" target="_blank">Click here to see the documentation</a>.</li></ul>
-				<h2 id="license">License</h2>
-				<p>This is not a open source project!</p>
-				<p>And this plugin is free for all!</p>
-				<p>You are allowed to use/play it on your server. Anything else besides it: All rights reserved to its respective owner (me)!</p>
-				<p>And this also includes:</p>
-				<ul>
-				<li>You are not allowed to access the source code or reuse the source code.</li>
-				<li>You are not allowed to copy or sell the project to anyone.</li>
-				</ul>
-			</section>
-		</div>
+			</div>
+		</header>
+		<p style="text-align: center; font-size: 50px; margin-bottom: 1px; font-weight: bold;">&#9823; The Doctor Reborn &#9823;</p>
+		<p style="text-align: center; font-size: 12px; margin-top: 0px; margin-bottom: 3px;">A Minecraft RPG plugin based on Doctor Who.</p>
+		<p style="text-align: center; margin-top: 0px; font-size: 20px; margin-bottom: 10px;">
+			<button type="button" onclick="javascript:window.open('https://dev.bukkit.org/projects/the-doctor-reborn/pages/commands', '_blank');" style="color: #000000;">Commands</button>
+			<button type="button" onclick="javascript:window.open('https://dev.bukkit.org/projects/the-doctor-reborn/pages/permissions', '_blank');" style="color: #000000;">Permissions</button>
+			<button type="button" onclick="javascript:window.open('https://dev.bukkit.org/projects/the-doctor-reborn/pages/configuration', '_blank');" style="color: #000000;">Configuration</button>
+		</p>
+		<p style="text-align: center; font-size: 30px; margin-bottom: 2px; font-weight: bold;">&#10095; Reborn as a Time Lord victorious!</p>
+		<p style="text-align: center; font-size: 15px; margin-bottom: 6px;">
+			The Doctor Reborn allows you to regenerate instead of dying.
+			<br />
+			<br />
+			Become a powerful Time Lord with 12 lives left for you to enjoy and have fun with your friends.
+		</p>
+		<p style="text-align: center; font-size: 30px; margin-bottom: 2px; font-weight: bold;">&#10095; Looking for downloads?</p>
+		<p style="text-align: center; font-size: 15px; margin-bottom: 6px;">
+			<u><a href="https://dev.bukkit.org/projects/the-doctor-reborn/files" target="_blank" style="color: #ffffff;">Visit the project page to download the latest version.</a></u>
+			<br />
+			<br />
+			<i>This plugin works for Bukkit & Spigot!</i>
+		</p>
+		<p style="text-align: center; font-size: 30px; margin-bottom: 2px; font-weight: bold;">&#10095; Need support?</p>
+		<p style="text-align: center; font-size: 15px; margin-bottom: 6px;">
+			The plugin is on its initial versions. It will be very common to find bugs. Always check the server console for detailed info about internal errors. If you would like to report a new issue, <u><a href="https://github.com/leothawne/TheDoctorReborn/issues" target="_blank" style="color: #ffffff;">visit the issues page to report and/or look for reported issues</a></u>.
+		</p>
+		<p style="text-align: center; font-size: 30px; margin-bottom: 2px; font-weight: bold;">&#10095; Donate</p>
+		<p style="text-align: center; font-size: 15px; margin-bottom: 6px;">
+			Want to help the project stay alive? Help with your donation:
+			<br />
+			<br />
+			<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+				<input type="hidden" name="cmd" value="_s-xclick" />
+				<input type="hidden" name="hosted_button_id" value="WVZ94QWN2Q4HS" />
+				<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="1" name="submit" alt="PayPal - The safer, easier way to pay online!" style="display: block; margin-left: auto; margin-right: auto;" />
+				<img alt="" border="1" src="https://www.paypalobjects.com/pt_BR/i/scr/pixel.gif" width="1" height="1" style="display: block; margin-left: auto; margin-right: auto;" />
+			</form>
+		</p>
+		<p style="text-align: center; font-size: 30px; margin-bottom: 2px; font-weight: bold;">&#10095; Note</p>
+		<p style="text-align: center; font-size: 15px; margin-bottom: 6px;">
+			The 0.1.0 BETA is now available for testing (and it's not stable and full of bugs too). Please <u><a href="https://dev.bukkit.org/projects/the-doctor-reborn#comments" target="_blank" style="color: #ffffff;">leave your feedback</a></u> in the comments on the project page.
+		</p>
+		<p style="text-align: center; font-size: 30px; margin-bottom: 2px; font-weight: bold;">&#10095; FAQ</p>
+		<p style="text-align: center; font-size: 15px; margin-bottom: 6px;">
+			&#10022; &#9866; There is nothing here yet!
+		</p>
+		<p style="text-align: center; font-size: 30px; margin-bottom: 2px; font-weight: bold;">&#10095; Changelog</p>
+		<p style="text-align: center; font-size: 15px; margin-bottom: 6px;">
+			&#10022; &#10010; <i>[13/08/2018 07:00 (UTC-03)]</i> 0.1.0 BETA published.
+		</p>
+		<p style="text-align: center; font-size: 30px; margin-bottom: 2px; font-weight: bold;">&#10095; Documentation</p>
+		<p style="text-align: center; font-size: 15px; margin-bottom: 6px;">
+			<u><a href="https://dev.bukkit.org/projects/the-doctor-reborn/pages" target="_blank" style="color: #ffffff;">Click here to see the documentation.</a></u>
+		</p>
+		<p style="text-align: center; font-size: 30px; margin-bottom: 2px; font-weight: bold;">&#10095; License <i>[Last modified on: 21/09/2018 00:15 (UTC-03)]</i></p>
+		<p style="text-align: center; font-size: 15px; margin-bottom: 6px;">
+			This is not a open source project!
+			<br />
+			<br />
+			And this plugin is free for all!
+			<br />
+			<br />
+			You are not allowed to use/play it on your server. Anything else besides it: All rights reserved to its respective owner (me)!
+			<br />
+			<br />
+			And this also includes:
+			<br />
+			&#10022; You are not allowed to have access to the source code. Reverse engineering is strictly forbidden!
+			<br />
+			&#10022; You are not allowed to copy or sell the project to anyone (it is free for all).
+		</p>
 		<footer>
-			<p>&copy; 2018. All rights reserved!</p>
-			<p>Project maintained by <a href="https://twitter.com/leothawne">leothawne</a></p>
+			<hr />
+			<p style="text-align: center; font-size: 14px;">&copy; 2018. All rights reserved!</p>
 		</footer>
-		<!--[if !IE]><script>fixScale(document);</script><![endif]-->
 	</body>
 </html>
