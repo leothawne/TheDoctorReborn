@@ -1,4 +1,36 @@
-User-agent: *
-Allow: /TheDoctorReborn/index.html
+User-agent: Googlebot
 Disallow: /TheDoctorReborn/api/
 Disallow: /TheDoctorReborn/rd.html
+Allow: /TheDoctorReborn/
+
+User-agent: Googlebot-images
+Disallow: /TheDoctorReborn/api/
+Disallow: /TheDoctorReborn/rd.html
+Allow: /TheDoctorReborn/
+
+User-agent: Adsbot-Google
+Disallow: /TheDoctorReborn/api/
+Disallow: /TheDoctorReborn/rd.html
+Allow: /TheDoctorReborn/
+
+User-agent: Mediapartners-Google
+Disallow: /TheDoctorReborn/api/
+Disallow: /TheDoctorReborn/rd.html
+Allow: /TheDoctorReborn/
+
+User-agent: Slurp
+Disallow: /TheDoctorReborn/api/
+Disallow: /TheDoctorReborn/rd.html
+Allow: /TheDoctorReborn/
+
+User-agent: Bingbot
+Disallow: /TheDoctorReborn/api/
+Disallow: /TheDoctorReborn/rd.html
+Allow: /TheDoctorReborn/
+
+User-agent: *
+Disallow: /TheDoctorReborn/api/
+Disallow: /TheDoctorReborn/rd.html
+Allow: /TheDoctorReborn/
+
+Sitemap: https://leothawne.github.io/TheDoctorReborn/sitemap.xml
