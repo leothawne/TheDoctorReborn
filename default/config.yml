@@ -1,0 +1,13 @@
+#If for some reason you want to disable this plugin, just set 'enable-plugin' to 'false' (default: true).
+enable-plugin: true
+
+#Change this to 'false' if you don't want to use TDR Worlds (default: true).
+#World list: LostDimension
+use-worlds: true
+
+#Change this to 'false' if you don't want to allow '/reborn tp' (default: true).
+#This will not make any difference if 'use-worlds' is set to 'false'.
+teleport-worlds: true
+
+#Do not change this!
+config-version: 1
