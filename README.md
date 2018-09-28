@@ -4,7 +4,7 @@ The Doctor Reborn allows you to regenerate instead of dying.
 Become a powerful Time Lord with 12 lives left for you to enjoy and have fun with your friends.
 
 ## Looking for downloads?
-Please check the [project page](https://dev.bukkit.org/projects/the-doctor-reborn)!
+Please check the [Bukkit Dev page](https://dev.bukkit.org/projects/the-doctor-reborn) or the [SpigotMC page](https://www.spigotmc.org/resources/the-doctor-reborn.60429/)!
 
 *Runnable on Bukkit & Spigot*
 
@@ -15,7 +15,7 @@ The plugin is on it's initial versions. It will be very normal to find bugs. Alw
 Want to help the project stay alive? Help with your donation: [donate here](https://leothawne.github.io/TheDoctorReborn/#donate)
 
 ## Documentation:
-[Click here to see the documentation](https://dev.bukkit.org/projects/the-doctor-reborn/pages).
+[Click here to see the documentation](https://leothawne.github.com/TheDoctorReborn/).
 
 ## License:
 This is not a open source project!
