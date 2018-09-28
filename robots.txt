@@ -1,5 +1,6 @@
 User-agent: Googlebot
 Disallow: /TheDoctorReborn/api/
+Disallow: /TheDoctorReborn/contents/
 Disallow: /TheDoctorReborn/commands.html
 Disallow: /TheDoctorReborn/configuration.html
 Disallow: /TheDoctorReborn/permissions.html
@@ -9,6 +10,7 @@ Allow: /TheDoctorReborn/
 
 User-agent: Googlebot-images
 Disallow: /TheDoctorReborn/api/
+Disallow: /TheDoctorReborn/contents/
 Disallow: /TheDoctorReborn/commands.html
 Disallow: /TheDoctorReborn/configuration.html
 Disallow: /TheDoctorReborn/permissions.html
@@ -18,6 +20,7 @@ Allow: /TheDoctorReborn/
 
 User-agent: Adsbot-Google
 Disallow: /TheDoctorReborn/api/
+Disallow: /TheDoctorReborn/contents/
 Disallow: /TheDoctorReborn/commands.html
 Disallow: /TheDoctorReborn/configuration.html
 Disallow: /TheDoctorReborn/permissions.html
@@ -27,6 +30,7 @@ Allow: /TheDoctorReborn/
 
 User-agent: Mediapartners-Google
 Disallow: /TheDoctorReborn/api/
+Disallow: /TheDoctorReborn/contents/
 Disallow: /TheDoctorReborn/commands.html
 Disallow: /TheDoctorReborn/configuration.html
 Disallow: /TheDoctorReborn/permissions.html
@@ -36,6 +40,7 @@ Allow: /TheDoctorReborn/
 
 User-agent: Slurp
 Disallow: /TheDoctorReborn/api/
+Disallow: /TheDoctorReborn/contents/
 Disallow: /TheDoctorReborn/commands.html
 Disallow: /TheDoctorReborn/configuration.html
 Disallow: /TheDoctorReborn/permissions.html
@@ -45,6 +50,7 @@ Allow: /TheDoctorReborn/
 
 User-agent: Bingbot
 Disallow: /TheDoctorReborn/api/
+Disallow: /TheDoctorReborn/contents/
 Disallow: /TheDoctorReborn/commands.html
 Disallow: /TheDoctorReborn/configuration.html
 Disallow: /TheDoctorReborn/permissions.html
@@ -54,6 +60,7 @@ Allow: /TheDoctorReborn/
 
 User-agent: *
 Disallow: /TheDoctorReborn/api/
+Disallow: /TheDoctorReborn/contents/
 Disallow: /TheDoctorReborn/commands.html
 Disallow: /TheDoctorReborn/configuration.html
 Disallow: /TheDoctorReborn/permissions.html
