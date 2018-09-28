@@ -5,8 +5,10 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<title>The Doctor Reborn, a Minecraft plugin for RPG based on Doctor Who.</title>
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" id="bootstrap-css" />
+		<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 		<link rel="stylesheet" href="/contents/styles/navbar.css" />
 		<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
 		<link rel="icon" type="image/png" href="/contents/images/icons/TheDoctorReborn.png" />
 		<link rel="shortcut icon" type="image/png" href="/contents/images/icons/TheDoctorReborn.png" />
@@ -26,6 +28,21 @@
 				"url": "https://leothawne.github.io/TheDoctorReborn/",
 				"headline": "Reborn as a Time Lord victorious!",
 				"@context": "http://schema.org"
+			}
+		</script>
+		<script>
+			function showImagesDialog(){
+				$(".imagesDialog").dialog({
+					resizable: false,
+					height: 500,
+					width: 700,
+					modal: true,
+					buttons: {
+						"Close": function (){
+							$(this).dialog("close");
+						}
+					}
+				});
 			}
 		</script>
 		<style>
@@ -107,6 +124,7 @@
 		<p style="text-align: center; font-size: 12px; margin-top: 0px; margin-bottom: 5px;">A Minecraft RPG plugin based on Doctor Who.</p>
 		<p style="text-align: center; margin-top: 0px; font-size: 20px; margin-bottom: 3px;">
 			<button type="button" onclick="javascript:window.open('https://dev.bukkit.org/projects/the-doctor-reborn/', '_blank');" style="color: #000000;">View on Bukkit</button>
+			<button type="button" onclick="javascript:showImagesDialog();" style="color: #000000;">Screenshots</button>
 			<button type="button" onclick="javascript:window.open('https://www.spigotmc.org/resources/the-doctor-reborn.60429/', '_blank');" style="color: #000000;">View on SpigotMC</button>
 		</p>
 		<p style="text-align: center; margin-top: 0px; font-size: 20px; margin-bottom: 10px;">
@@ -195,5 +213,14 @@
 			<hr />
 			<p style="text-align: center; font-size: 14px;">&copy; 2018 Murilo Amaral Nappi. All rights reserved!</p>
 		</footer>
+		<div class="imagesDialog" title="Screenshots" style="background: #ffffff; color: #000000;">
+			<img src="/TheDoctorReborn/contents/images/1.png" style="display: block; margin-left: auto; margin-right: auto; height: 90%; width: 100%; margin-top: 10px; margin-bottom: 10px;"></img>
+			<img src="/TheDoctorReborn/contents/images/2.png" style="display: block; margin-left: auto; margin-right: auto; height: 90%; width: 100%; margin-top: 10px; margin-bottom: 10px;"></img>
+			<img src="/TheDoctorReborn/contents/images/3.png" style="display: block; margin-left: auto; margin-right: auto; height: 90%; width: 100%; margin-top: 10px; margin-bottom: 10px;"></img>
+			<img src="/TheDoctorReborn/contents/images/4.png" style="display: block; margin-left: auto; margin-right: auto; height: 90%; width: 100%; margin-top: 10px; margin-bottom: 10px;"></img>
+			<img src="/TheDoctorReborn/contents/images/5.png" style="display: block; margin-left: auto; margin-right: auto; height: 90%; width: 100%; margin-top: 10px; margin-bottom: 10px;"></img>
+			<img src="/TheDoctorReborn/contents/images/6.png" style="display: block; margin-left: auto; margin-right: auto; height: 90%; width: 100%; margin-top: 10px; margin-bottom: 10px;"></img>
+			<img src="/TheDoctorReborn/contents/images/7.png" style="display: block; margin-left: auto; margin-right: auto; height: 90%; width: 100%; margin-top: 10px; margin-bottom: 10px;"></img>
+		</div>
 	</body>
 </html>
