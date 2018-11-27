@@ -5,7 +5,6 @@ Disallow: /TheDoctorReborn/commands.html
 Disallow: /TheDoctorReborn/configuration.html
 Disallow: /TheDoctorReborn/permissions.html
 Disallow: /TheDoctorReborn/recipes.html
-Disallow: /TheDoctorReborn/rd.html
 Allow: /TheDoctorReborn/
 
 User-agent: Googlebot-images
@@ -15,7 +14,6 @@ Disallow: /TheDoctorReborn/commands.html
 Disallow: /TheDoctorReborn/configuration.html
 Disallow: /TheDoctorReborn/permissions.html
 Disallow: /TheDoctorReborn/recipes.html
-Disallow: /TheDoctorReborn/rd.html
 Allow: /TheDoctorReborn/
 
 User-agent: Adsbot-Google
@@ -25,7 +23,6 @@ Disallow: /TheDoctorReborn/commands.html
 Disallow: /TheDoctorReborn/configuration.html
 Disallow: /TheDoctorReborn/permissions.html
 Disallow: /TheDoctorReborn/recipes.html
-Disallow: /TheDoctorReborn/rd.html
 Allow: /TheDoctorReborn/
 
 User-agent: Mediapartners-Google
@@ -35,7 +32,6 @@ Disallow: /TheDoctorReborn/commands.html
 Disallow: /TheDoctorReborn/configuration.html
 Disallow: /TheDoctorReborn/permissions.html
 Disallow: /TheDoctorReborn/recipes.html
-Disallow: /TheDoctorReborn/rd.html
 Allow: /TheDoctorReborn/
 
 User-agent: Slurp
@@ -45,7 +41,6 @@ Disallow: /TheDoctorReborn/commands.html
 Disallow: /TheDoctorReborn/configuration.html
 Disallow: /TheDoctorReborn/permissions.html
 Disallow: /TheDoctorReborn/recipes.html
-Disallow: /TheDoctorReborn/rd.html
 Allow: /TheDoctorReborn/
 
 User-agent: Bingbot
@@ -55,7 +50,6 @@ Disallow: /TheDoctorReborn/commands.html
 Disallow: /TheDoctorReborn/configuration.html
 Disallow: /TheDoctorReborn/permissions.html
 Disallow: /TheDoctorReborn/recipes.html
-Disallow: /TheDoctorReborn/rd.html
 Allow: /TheDoctorReborn/
 
 User-agent: *
@@ -65,7 +59,6 @@ Disallow: /TheDoctorReborn/commands.html
 Disallow: /TheDoctorReborn/configuration.html
 Disallow: /TheDoctorReborn/permissions.html
 Disallow: /TheDoctorReborn/recipes.html
-Disallow: /TheDoctorReborn/rd.html
 Allow: /TheDoctorReborn/
 
 Sitemap: https://leothawne.github.io/TheDoctorReborn/sitemap.xml
