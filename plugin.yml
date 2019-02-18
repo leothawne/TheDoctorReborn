@@ -1,0 +1,29 @@
+name: TheDoctorReborn
+description: Regenerate 12 times as a Time Lord.
+version: 0.3.0
+api-version: 1.13
+load: STARTUP
+author: [leothawne]
+website: https://leothawne.github.io/TheDoctorReborn/
+url: https://leothawne.github.io/TheDoctorReborn/
+main: io.github.leothawne.thedoctorreborn.TheDoctorRebornLoader
+database: true
+commands:
+    reborn:
+        description: All available commands for The Doctor Reborn.
+        aliases: [rb]
+        usage: /<command>
+    rebornadmin:
+        description: All available administration commands for The Doctor Reborn.
+        aliases: [rba]
+        usage: /<command>
+permissions:
+    TheDoctorReborn.use:
+        description: Allow players to use TDR commands.
+        default: true
+    TheDoctorReborn.regenerate:
+        description: Allow players to become Time Lords.
+        default: true
+    TheDoctorReborn.admin:
+        description: Allow admins to use TDR admin commands.
+        default: op
