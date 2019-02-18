@@ -43,10 +43,6 @@ public class RebornAdminCommand implements CommandExecutor {
 					sender.sendMessage(ChatColor.GREEN + "/rebornadmin info <timelord> " + ChatColor.AQUA + "- Show the regeneration status of a Time Lord.");
 					sender.sendMessage(ChatColor.GREEN + "/rebornadmin force <timelord> " + ChatColor.AQUA + "- Force a Time Lord to regenerate. (Please, use this with caution!)");
 					sender.sendMessage(ChatColor.GREEN + "/rebornadmin toggle <timelord> [on/off] " + ChatColor.AQUA + "- Toggle regeneration cycle of a Time Lord.");
-					sender.sendMessage(ChatColor.GREEN + "/rebornadmin give <item> <amount> " + ChatColor.AQUA + "- An easy way of getting TDR items.");
-					sender.sendMessage(ChatColor.GREEN + "/rebornadmin reload " + ChatColor.AQUA + "- Reload the configuration file.");
-					sender.sendMessage(ChatColor.GREEN + "/rebornadmin purge [confirm] " + ChatColor.AQUA + "- Wipe every data from the database.");
-					sender.sendMessage(ChatColor.GREEN + "/rebornadmin update <timelord> " + ChatColor.AQUA + "- Kick the specified Time Lord to update its account.");
 					sender.sendMessage(ChatColor.YELLOW + "You can also use " + ChatColor.GREEN + "/rebornadmin " + ChatColor.YELLOW + "as " + ChatColor.GREEN + "/rba" + ChatColor.YELLOW + ".");
 				} else if(args[0].equalsIgnoreCase("version")) {
 					if(args.length < 2) {

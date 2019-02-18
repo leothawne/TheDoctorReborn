@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>io.github.leothawne</groupId>
 	<artifactId>thedoctorreborn</artifactId>
-	<version>0.3.0</version>
+	<version>0.3.1</version>
 	<name>The Doctor Reborn</name>
 	<description>Regenerate 12 times as a Time Lord.</description>
 	<url>https://dev.bukkit.org/projects/the-doctor-reborn</url>

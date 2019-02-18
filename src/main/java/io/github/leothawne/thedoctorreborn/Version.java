@@ -17,7 +17,7 @@ public class Version {
 		Version.myLogger = myLogger;
 	}
 	private static final int configFileVersion = 3;
-	private static final String Plugin_Version = "0.3.0";
+	private static final String Plugin_Version = "0.3.1";
 	private static final String Plugin_Date = "99/99/9999 (America/Sao_Paulo)";
 	private static final String Minecraft_Version = "1.13.x";
 	private static final String Minecraft_Build = "1.13-R0.1-SNAPSHOT";
