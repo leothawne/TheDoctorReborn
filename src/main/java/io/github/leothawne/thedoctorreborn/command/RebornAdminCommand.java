@@ -30,19 +30,17 @@ public class RebornAdminCommand implements CommandExecutor {
 		this.connection = connection;
 		this.myLogger = myLogger;
 	}
-	private final String TDRVersion = Version.getVersionNumber();
-	private final String TDRVersion_Date = Version.getVersionDate();
 	@Override
 	public final boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
 		if(cmd.getName().equalsIgnoreCase("rebornadmin")) {
 			if(sender.hasPermission("TheDoctorReborn.admin")) {
 				if(args.length == 0) {
 					sender.sendMessage(ChatColor.AQUA + "=+=+=+= [The Doctor Reborn :: Admin] =+=+=+=");
-					sender.sendMessage(ChatColor.GREEN + "/rebornadmin " + ChatColor.AQUA + "- Administration commands for The Doctor Reborn.");
-					sender.sendMessage(ChatColor.GREEN + "/rebornadmin version " + ChatColor.AQUA + "- Check for new updates.");
-					sender.sendMessage(ChatColor.GREEN + "/rebornadmin info <timelord> " + ChatColor.AQUA + "- Show the regeneration status of a Time Lord.");
-					sender.sendMessage(ChatColor.GREEN + "/rebornadmin force <timelord> " + ChatColor.AQUA + "- Force a Time Lord to regenerate. (Please, use this with caution!)");
-					sender.sendMessage(ChatColor.GREEN + "/rebornadmin toggle <timelord> [on/off] " + ChatColor.AQUA + "- Toggle regeneration cycle of a Time Lord.");
+					sender.sendMessage(ChatColor.GREEN + "/rebornadmin " + ChatColor.AQUA + "- Shows administration commands for The Doctor Reborn.");
+					sender.sendMessage(ChatColor.GREEN + "/rebornadmin version " + ChatColor.AQUA + "- Checks for new updates.");
+					sender.sendMessage(ChatColor.GREEN + "/rebornadmin info <timelord> " + ChatColor.AQUA + "- Shows the regeneration status of a Time Lord.");
+					sender.sendMessage(ChatColor.GREEN + "/rebornadmin force <timelord> " + ChatColor.AQUA + "- Forces a Time Lord to regenerate. (Please, use this with caution!)");
+					sender.sendMessage(ChatColor.GREEN + "/rebornadmin toggle <timelord> [on/off] " + ChatColor.AQUA + "- Toggles the regeneration cycle of a Time Lord.");
 					sender.sendMessage(ChatColor.YELLOW + "You can also use " + ChatColor.GREEN + "/rebornadmin " + ChatColor.YELLOW + "as " + ChatColor.GREEN + "/rba" + ChatColor.YELLOW + ".");
 				} else if(args[0].equalsIgnoreCase("version")) {
 					if(args.length < 2) {
@@ -57,7 +55,7 @@ public class RebornAdminCommand implements CommandExecutor {
 								sb.append(line);
 							}
 							if(sb.toString() != null) {
-								String[] LocalVersion = TDRVersion.split("\\.");
+								String[] LocalVersion = Version.getVersionNumber().split("\\.");
 								int Local_VersionNumber1 = Integer.parseInt(LocalVersion[0]);
 								int Local_VersionNumber2 = Integer.parseInt(LocalVersion[1]);
 								int Local_VersionNumber3 = Integer.parseInt(LocalVersion[2]);
@@ -66,7 +64,7 @@ public class RebornAdminCommand implements CommandExecutor {
 								int Server2_VersionNumber1 = Integer.parseInt(Server2[0]);
 								int Server2_VersionNumber2 = Integer.parseInt(Server2[1]);
 								int Server2_VersionNumber3 = Integer.parseInt(Server2[2]);
-								sender.sendMessage(ChatColor.AQUA + "[TDR :: Admin] " + ChatColor.YELLOW + "Running: " + ChatColor.GREEN + "" + TDRVersion + "" + ChatColor.YELLOW + " (Released on " + ChatColor.GREEN + "" + TDRVersion_Date + "" + ChatColor.YELLOW + ")");
+								sender.sendMessage(ChatColor.AQUA + "[TDR :: Admin] " + ChatColor.YELLOW + "Running: " + ChatColor.GREEN + "" + Version.getVersionNumber() + "" + ChatColor.YELLOW + " (Released on " + ChatColor.GREEN + "" + Version.getVersionDate() + "" + ChatColor.YELLOW + ")");
 								String updateMessage = ChatColor.AQUA + "[TDR :: Admin] " + ChatColor.YELLOW + "A newer version is available: " + ChatColor.GREEN + "" + Server1[0] + "" + ChatColor.YELLOW + " (released on " + ChatColor.GREEN + "" + Server1[1] + "" + ChatColor.YELLOW + ")";
 								if(Server2_VersionNumber1 > Local_VersionNumber1) {
 									sender.sendMessage(updateMessage);
@@ -96,7 +94,18 @@ public class RebornAdminCommand implements CommandExecutor {
 						} else {*/
 							if(args.length < 3) {
 								if(connection != null) {
-									Player testPlayer = Bukkit.getPlayer(args[1]);
+									String name = null;
+									if(args[1].equalsIgnoreCase("me")) {
+										if(sender instanceof Player) {
+											name = sender.getName();
+										} else {
+											sender.sendMessage("You are not a player!");
+											return true;
+										}
+									} else {
+										name = args[1];
+									}
+									Player testPlayer = Bukkit.getPlayer(name);
 									if(testPlayer != null) {
 										String playerName = testPlayer.getName();
 										try {
@@ -173,7 +182,18 @@ public class RebornAdminCommand implements CommandExecutor {
 						} else {
 							if(args.length < 3) {
 								if(connection != null) {
-									Player testPlayer = Bukkit.getPlayer(args[1]);
+									String name = null;
+									if(args[1].equalsIgnoreCase("me")) {
+										if(sender instanceof Player) {
+											name = sender.getName();
+										} else {
+											sender.sendMessage("You are not a player!");
+											return true;
+										}
+									} else {
+										name = args[1];
+									}
+									Player testPlayer = Bukkit.getPlayer(name);
 									if(testPlayer != null) {
 										String playerName = testPlayer.getName();
 										try {
@@ -224,7 +244,18 @@ public class RebornAdminCommand implements CommandExecutor {
 					} else {
 						if(args.length == 3) {
 							if(connection != null) {
-								Player testPlayer = Bukkit.getPlayer(args[1]);
+								String name = null;
+								if(args[1].equalsIgnoreCase("me")) {
+									if(sender instanceof Player) {
+										name = sender.getName();
+									} else {
+										sender.sendMessage("You are not a player!");
+										return true;
+									}
+								} else {
+									name = args[1];
+								}
+								Player testPlayer = Bukkit.getPlayer(name);
 								if(testPlayer != null) {
 									String playerName = testPlayer.getName();
 									try {

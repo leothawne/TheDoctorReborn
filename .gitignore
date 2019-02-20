@@ -21,3 +21,4 @@ target/classes/META-INF/MANIFEST.MF
 target/classes/META-INF/maven/io.github.leothawne/thedoctorreborn/pom.properties
 target/classes/META-INF/maven/io.github.leothawne/thedoctorreborn/pom.xml
 target/classes/tdr.db
+*.class

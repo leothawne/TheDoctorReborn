@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import org.bukkit.ChatColor;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -15,9 +16,11 @@ import io.github.leothawne.thedoctorreborn.ConsoleLoader;
 public class PlayerEvent implements Listener {
 	private static Connection connection;
 	private static  ConsoleLoader myLogger;
-	public PlayerEvent(Connection connection, ConsoleLoader myLogger) {
+	private static FileConfiguration configuration;
+	public PlayerEvent(Connection connection, ConsoleLoader myLogger, FileConfiguration configuration) {
 		PlayerEvent.connection = connection;
 		PlayerEvent.myLogger = myLogger;
+		PlayerEvent.configuration = configuration;
 	}
 	private static final boolean welcome(Player timelord) {
 		Player player = (Player) timelord;
@@ -142,6 +145,11 @@ public class PlayerEvent implements Listener {
 			}
 		}
 		check(player, false);
+		if(player.hasPermission("TheDoctorReborn.admin")) {
+			if(configuration.getBoolean("update.check") == true) {
+				player.performCommand("rebornadmin version");
+			}
+		}
 	}
 	@EventHandler
 	public static final void onPlayerQuit(PlayerQuitEvent e) {

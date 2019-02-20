@@ -31,13 +31,13 @@ public class RebornCommand implements CommandExecutor {
 			if(sender.hasPermission("TheDoctorReborn.use")) {
 				if(args.length == 0) {
 					sender.sendMessage(ChatColor.AQUA + "=+=+=+= [The Doctor Reborn] =+=+=+=");
-					sender.sendMessage(ChatColor.GREEN + "/reborn " + ChatColor.AQUA + "- Show all commands for The Doctor Reborn.");
-					sender.sendMessage(ChatColor.GREEN + "/reborn version " + ChatColor.AQUA + "- Show plugin version.");
-					sender.sendMessage(ChatColor.GREEN + "/reborn info " + ChatColor.AQUA + "- Show your regeneration status.");
-					sender.sendMessage(ChatColor.GREEN + "/reborn force " + ChatColor.AQUA + "- Force your regeneration proccess.");
-					sender.sendMessage(ChatColor.GREEN + "/reborn lock <on/off> " + ChatColor.AQUA + "- Lock/unlock your regeneration ability.");
-					sender.sendMessage(ChatColor.GREEN + "/reborn ch " + ChatColor.AQUA + "- Clear your main hand.");
-					sender.sendMessage(ChatColor.GREEN + "/rebornadmin " + ChatColor.AQUA + "- Administration commands for The Doctor Reborn.");
+					sender.sendMessage(ChatColor.GREEN + "/reborn " + ChatColor.AQUA + "- Shows all commands for The Doctor Reborn.");
+					sender.sendMessage(ChatColor.GREEN + "/reborn version " + ChatColor.AQUA + "- Shows the plugin version.");
+					sender.sendMessage(ChatColor.GREEN + "/reborn info " + ChatColor.AQUA + "- Shows your regeneration status.");
+					sender.sendMessage(ChatColor.GREEN + "/reborn force " + ChatColor.AQUA + "- Forces you to regenerate.");
+					sender.sendMessage(ChatColor.GREEN + "/reborn lock <on/off> " + ChatColor.AQUA + "- Locks/unlocks your regeneration ability.");
+					sender.sendMessage(ChatColor.GREEN + "/reborn ch " + ChatColor.AQUA + "- Clears your main hand.");
+					sender.sendMessage(ChatColor.GREEN + "/rebornadmin " + ChatColor.AQUA + "- Shows administration commands for The Doctor Reborn.");
 					sender.sendMessage(ChatColor.YELLOW + "You can also use "+ ChatColor.GREEN + "/reborn "+ ChatColor.YELLOW + "as "+ ChatColor.GREEN + "/rb"+ ChatColor.YELLOW + ".");
 				} else if(args[0].equalsIgnoreCase("version")) {
 					if(args.length < 2) {

@@ -13,18 +13,13 @@ public class ConfigurationLoader {
 	}
 	private static File configFile = null;
 	public static final void check() {
-		myLogger.info("Looking for config file...");
 		configFile = new File(plugin.getDataFolder(), "config.yml");
 		if(configFile.exists() == false) {
 			myLogger.warning("Config file not found. Creating a new one...");
 			plugin.saveDefaultConfig();
-			myLogger.info("New config file created.");
-		} else {
-			myLogger.info("Config file found.");
 		}
 	}
 	public static final FileConfiguration load() {
-		myLogger.info("Loading config file...");
 		configFile = new File(plugin.getDataFolder(), "config.yml");
 		if(configFile.exists()) {
 			FileConfiguration configuration = plugin.getConfig();
