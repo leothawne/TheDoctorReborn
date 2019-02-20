@@ -21,4 +21,9 @@ target/classes/META-INF/MANIFEST.MF
 target/classes/META-INF/maven/io.github.leothawne/thedoctorreborn/pom.properties
 target/classes/META-INF/maven/io.github.leothawne/thedoctorreborn/pom.xml
 target/classes/tdr.db
-*.class
+target/classes/io/github/leothawne/thedoctorreborn/api/bStats/MetricsAPI$1.class
+target/classes/io/github/leothawne/thedoctorreborn/api/bStats/MetricsAPI$2.class
+target/classes/io/github/leothawne/thedoctorreborn/api/bStats/MetricsAPI.class
+target/classes/io/github/leothawne/thedoctorreborn/api/utility/TabCompleterAPI.class
+target/classes/io/github/leothawne/thedoctorreborn/api/utility/WarnIntegrationsAPI.class
+target/classes/io/github/leothawne/thedoctorreborn/MetricsLoader.class
