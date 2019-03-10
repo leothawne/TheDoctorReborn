@@ -72,12 +72,6 @@
                 <version>2.5</version>
             </plugin>
 		</plugins>
-		<resources>
-			<resource>
-				<directory>src/main/resources</directory>
-				<filtering>true</filtering>
-			</resource>
-		</resources>
 	</build>
 	<repositories>
 		<repository>
