@@ -5,7 +5,6 @@
 	<version>0.3.1</version>
 	<name>The Doctor Reborn</name>
 	<description>Regenerate 12 times as a Time Lord.</description>
-	<url>https://dev.bukkit.org/projects/the-doctor-reborn</url>
 	<build>
 		<finalName>The Doctor Reborn</finalName>
 		<plugins>

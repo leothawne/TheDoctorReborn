@@ -14,33 +14,30 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package io.github.leothawne.thedoctorreborn;
+package io.github.leothawne.TheDoctorReborn;
 
 import java.io.File;
 
 import org.bukkit.configuration.file.FileConfiguration;
 
 public class ConfigurationLoader {
-	private static TheDoctorRebornLoader plugin;
-	private static ConsoleLoader myLogger;
-	public ConfigurationLoader(TheDoctorRebornLoader plugin, ConsoleLoader myLogger) {
-		ConfigurationLoader.plugin = plugin;
-		ConfigurationLoader.myLogger = myLogger;
-	}
-	private static File configFile = null;
-	public static final void check() {
-		configFile = new File(plugin.getDataFolder(), "config.yml");
+	public static final void check(TheDoctorReborn plugin, ConsoleLoader myLogger) {
+		myLogger.info("Looking for config file...");
+		File configFile = new File(plugin.getDataFolder(), "config.yml");
 		if(configFile.exists() == false) {
 			myLogger.warning("Config file not found. Creating a new one...");
 			plugin.saveDefaultConfig();
+			myLogger.info("New config file created.");
+		} else {
+			myLogger.info("Config file found.");
 		}
 	}
-	public static final FileConfiguration load() {
-		configFile = new File(plugin.getDataFolder(), "config.yml");
+	public static final FileConfiguration load(TheDoctorReborn plugin, ConsoleLoader myLogger) {
+		myLogger.info("Loading config file...");
+		File configFile = new File(plugin.getDataFolder(), "config.yml");
 		if(configFile.exists()) {
 			FileConfiguration configuration = plugin.getConfig();
 			myLogger.info("Config file loaded.");
-			new Version(plugin, myLogger);
 			if(configuration.getInt("config-version") != Version.getConfigVersion()) {
 				myLogger.severe("The config.yml file is outdated! You must manually delete the config.yml file and reload the plugin.");
 			}

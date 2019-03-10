@@ -1,0 +1,8 @@
+no-permission: "You can't do that! You don't have permission."
+player-tma: "Too many arguments."
+player-nea: "Not enough arguments."
+player-error: "You must be a player to do that."
+missing-timelord: "You must specify a Time Lord!"
+
+#Do not change this under any circumstances!
+language-version: 1

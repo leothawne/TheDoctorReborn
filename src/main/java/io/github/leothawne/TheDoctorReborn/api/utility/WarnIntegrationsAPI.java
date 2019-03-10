@@ -14,16 +14,21 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package io.github.leothawne.thedoctorreborn.api.utility;
+package io.github.leothawne.TheDoctorReborn.api.utility;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
-import org.bukkit.util.StringUtil;
+import org.bukkit.plugin.Plugin;
 
-public class TabCompleterAPI {
-	public List<String> partial(String token, Collection<String> from) {
-        return StringUtil.copyPartialMatches(token, from, new ArrayList<>(from.size()));
-    }
+import io.github.leothawne.TheDoctorReborn.TheDoctorReborn;
+
+public class WarnIntegrationsAPI {
+	public WarnIntegrationsAPI(TheDoctorReborn mainPlugin, List<String> plugins) {
+		for(String plugin : plugins) {
+			Plugin getPlugin = mainPlugin.getServer().getPluginManager().getPlugin(plugin);
+			if(getPlugin != null) {
+				getPlugin.getLogger().warning(getPlugin.getName() + " was successfully integrated with " + mainPlugin.getName() + "!");
+			}
+		}
+	}
 }

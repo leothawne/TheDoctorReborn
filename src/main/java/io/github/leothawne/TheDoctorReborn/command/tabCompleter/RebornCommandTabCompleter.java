@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package io.github.leothawne.thedoctorreborn.command.tabCompleter;
+package io.github.leothawne.TheDoctorReborn.command.tabCompleter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,22 +25,18 @@ import org.bukkit.command.TabCompleter;
 
 import com.google.common.collect.ImmutableList;
 
-import io.github.leothawne.thedoctorreborn.api.utility.TabCompleterAPI;
+import io.github.leothawne.TheDoctorReborn.api.utility.TabCompleterAPI;
 
 public class RebornCommandTabCompleter extends TabCompleterAPI implements TabCompleter {
 	@Override
 	public final List<String> onTabComplete(CommandSender sender, Command cmd, String commandLabel, String[] args){
 		List<String> ReturnNothing = new ArrayList<>();
-		if(sender.hasPermission("TheDoctorReborn.use") && cmd.getName().equalsIgnoreCase("reborn")) {
+		if(sender.hasPermission("TheDoctorReborn.use")) {
 			if(args.length == 1) {
-				ImmutableList<String> Reborn = ImmutableList.of("version", "info", "force", "lock", "ch");
+				ImmutableList<String> Reborn = ImmutableList.of("version", "info", "lock");
 				return partial(args[0], Reborn);
 			} else {
 				if(args[0].equalsIgnoreCase("lock") && args.length > 1 && args.length < 3) {
-					ImmutableList<String> Reborn = ImmutableList.of("on", "off");
-					return partial(args[1], Reborn);
-				}
-				if(args[0].equalsIgnoreCase("ch") && args.length > 1 && args.length < 3) {
 					ImmutableList<String> Reborn = ImmutableList.of("on", "off");
 					return partial(args[1], Reborn);
 				}

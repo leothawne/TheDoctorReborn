@@ -1,4 +1,4 @@
-package io.github.leothawne.thedoctorreborn.api.bStats;
+package io.github.leothawne.TheDoctorReborn.api.bStats;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;

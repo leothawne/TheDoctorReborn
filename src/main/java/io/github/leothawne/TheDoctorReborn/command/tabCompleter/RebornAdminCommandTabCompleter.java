@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package io.github.leothawne.thedoctorreborn.command.tabCompleter;
+package io.github.leothawne.TheDoctorReborn.command.tabCompleter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,29 +25,19 @@ import org.bukkit.command.TabCompleter;
 
 import com.google.common.collect.ImmutableList;
 
-import io.github.leothawne.thedoctorreborn.api.utility.TabCompleterAPI;
+import io.github.leothawne.TheDoctorReborn.api.utility.TabCompleterAPI;
 
 public class RebornAdminCommandTabCompleter extends TabCompleterAPI implements TabCompleter {
 	@Override
 	public final List<String> onTabComplete(CommandSender sender, Command cmd, String commandLabel, String[] args){
 		List<String> ReturnNothing = new ArrayList<>();
-		if(sender.hasPermission("TheDoctorReborn.use") && sender.hasPermission("TheDoctorReborn.admin") && cmd.getName().equalsIgnoreCase("rebornadmin")) {
+		if(sender.hasPermission("TheDoctorReborn.use") && sender.hasPermission("TheDoctorReborn.admin")) {
 			if(args.length == 1) {
-				ImmutableList<String> Reborn = ImmutableList.of("version", "info", "force", "toggle");
+				ImmutableList<String> Reborn = ImmutableList.of("version", "info");
 				return partial(args[0], Reborn);
 			} else {
 				if(args[0].equalsIgnoreCase("info") && args.length > 1 && args.length < 3) {
 					return null;
-				}
-				if(args[0].equalsIgnoreCase("force") && args.length > 1 && args.length < 3) {
-					return null;
-				}
-				if(args[0].equalsIgnoreCase("toggle") && args.length > 1 && args.length < 3) {
-					return null;
-				}
-				if(args[0].equalsIgnoreCase("toggle") && args.length > 2 && args.length < 4) {
-					ImmutableList<String> Reborn = ImmutableList.of("on", "off");
-					return partial(args[1], Reborn);
 				}
 			}
 		}

@@ -6,24 +6,21 @@ load: STARTUP
 author: [leothawne]
 website: https://leothawne.github.io/TheDoctorReborn/
 url: https://leothawne.github.io/TheDoctorReborn/
-main: io.github.leothawne.thedoctorreborn.TheDoctorRebornLoader
+main: io.github.leothawne.TheDoctorReborn.TheDoctorReborn
 database: true
 commands:
     reborn:
-        description: All available commands for The Doctor Reborn.
+        description: A The Doctor Reborn command.
         aliases: [rb]
         usage: /<command>
     rebornadmin:
-        description: All available administration commands for The Doctor Reborn.
+        description: A The Doctor Reborn command.
         aliases: [rba]
         usage: /<command>
 permissions:
     TheDoctorReborn.use:
-        description: Allow players to use TDR commands.
-        default: true
-    TheDoctorReborn.regenerate:
-        description: Allow players to become Time Lords.
+        description: A The Doctor Reborn permission node.
         default: true
     TheDoctorReborn.admin:
-        description: Allow admins to use TDR admin commands.
+        description: A The Doctor Reborn permission node.
         default: op

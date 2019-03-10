@@ -1,0 +1,8 @@
+no-permission: "Você não pode fazer isso! Você não tem permissão."
+player-tma: "Muitos argumentos inseridos."
+player-nea: "Poucos arguments inseridos."
+player-error: "Você deve ser um jogador para fazer isso."
+missing-timelord: "Você deve especificar um Senhor do Tempo!"
+
+#Não mude isso sob nenhuma circunstância!
+language-version: 1

@@ -14,26 +14,26 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package io.github.leothawne.thedoctorreborn;
+package io.github.leothawne.TheDoctorReborn;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
 
 public class ConsoleLoader {
-	private TheDoctorRebornLoader plugin;
-	public ConsoleLoader(TheDoctorRebornLoader plugin) {
-		this.plugin = plugin;
+	private static TheDoctorReborn plugin;
+	public ConsoleLoader(TheDoctorReborn plugin) {
+		ConsoleLoader.plugin = plugin;
 	}
 	private final ConsoleCommandSender getConsoleSender() {
 		return plugin.getServer().getConsoleSender();
 	}
 	public final void Hello() {
-		getConsoleSender().sendMessage(ChatColor.AQUA + " _______ _____  _____  ");
-		getConsoleSender().sendMessage(ChatColor.AQUA + "|__   __|  __ \\|  __ \\ ");
-		getConsoleSender().sendMessage(ChatColor.AQUA + "   | |  | |  | | |__) |" + ChatColor.WHITE + "  V: " + Version.getVersionNumber() + " (Minecraft: " + Version.getMinecraftVersion() + ")");
-		getConsoleSender().sendMessage(ChatColor.AQUA + "   | |  | |  | |  _  / " + ChatColor.WHITE + "  Requires Java: " + Version.getJavaVersion());
-		getConsoleSender().sendMessage(ChatColor.AQUA + "   | |  | |__| | | \\ \\ " + ChatColor.WHITE + "  Released on: " + Version.getVersionDate());
-		getConsoleSender().sendMessage(ChatColor.AQUA + "   |_|  |_____/|_|  \\_\\" + ChatColor.WHITE + "  My Twitter: @leonappi_");
+		getConsoleSender().sendMessage(ChatColor.AQUA + " _   _______ _____ _   _  _____ ");
+		getConsoleSender().sendMessage(ChatColor.AQUA + "| | |__   __/ ____| \\ | |/ ____|");
+		getConsoleSender().sendMessage(ChatColor.AQUA + "| |    | | | (___ |  \\| | (___  " + ChatColor.WHITE + "  V: " + Version.getVersionNumber() + " (Minecraft: " + Version.getMinecraftVersion() + ")");
+		getConsoleSender().sendMessage(ChatColor.AQUA + "| |    | |  \\___ \\| . ` |\\___ \\ " + ChatColor.WHITE + "  Requires Java: " + Version.getJavaVersion());
+		getConsoleSender().sendMessage(ChatColor.AQUA + "| |____| |  ____) | |\\  |____) |" + ChatColor.WHITE + "  Released on: " + Version.getVersionDate());
+		getConsoleSender().sendMessage(ChatColor.AQUA + "|______|_| |_____/|_| \\_|_____/ " + ChatColor.WHITE + "  My Twitter: @leonappi_");
 	}
 	public final void info(String message) {
 		getConsoleSender().sendMessage(ChatColor.WHITE + "[" + ChatColor.AQUA + "TDR " + ChatColor.GREEN + "I" + ChatColor.WHITE + "] " + message);

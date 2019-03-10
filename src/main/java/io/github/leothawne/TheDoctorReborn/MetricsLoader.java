@@ -14,23 +14,17 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package io.github.leothawne.thedoctorreborn;
+package io.github.leothawne.TheDoctorReborn;
 
-import io.github.leothawne.thedoctorreborn.api.bStats.MetricsAPI;
+import io.github.leothawne.TheDoctorReborn.api.bStats.MetricsAPI;
 
 public class MetricsLoader {
-	private static TheDoctorRebornLoader plugin;
-	private static ConsoleLoader myLogger;
-	protected MetricsLoader(TheDoctorRebornLoader plugin, ConsoleLoader myLogger) {
-		MetricsLoader.plugin = plugin;
-		MetricsLoader.myLogger = myLogger;
-	}
-	protected static final void init() {
-		MetricsAPI metrics = new MetricsAPI(plugin);
+	public static final void init(TheDoctorReborn plugin, ConsoleLoader myLogger, MetricsAPI metrics) {
+		metrics = new MetricsAPI(plugin);
 		if(metrics.isEnabled() == true) {
-			myLogger.info("The Doctor Reborn is using bStats to collect data to improve the next versions. In case you want to know what data will be collected: [https://bstats.org/getting-started]");
+			myLogger.info(plugin.getName() + " is using bStats to collect data to improve the next versions. In case you want to know what data will be collected: https://bstats.org/getting-started");
 		} else {
-			myLogger.warning("bStats is disabled and Where Are You cannot use it. Please enable bStats! Thank you.");
+			myLogger.warning("bStats is disabled and " + plugin.getName() + " cannot use it. Please enable bStats! Thank you.");
 		}
 	}
 }
