@@ -36,3 +36,9 @@ target/classes/io/github/leothawne/TheDoctorReborn/PlayersFileLoader.class
 target/classes/io/github/leothawne/TheDoctorReborn/task/RegenerationTask.class
 target/classes/io/github/leothawne/TheDoctorReborn/TheDoctorReborn.class
 target/classes/io/github/leothawne/TheDoctorReborn/Version$1.class
+target/classes/io/github/leothawne/TheDoctorReborn/api/event/PlayerRegenerationEvent.class
+target/classes/io/github/leothawne/TheDoctorReborn/api/utility/RegenerationAPI$1.class
+target/classes/io/github/leothawne/TheDoctorReborn/api/utility/RegenerationAPI.class
+target/classes/io/github/leothawne/TheDoctorReborn/command/RebornAdminCommand$2.class
+target/classes/io/github/leothawne/TheDoctorReborn/item/SymbioticNucleiItem.class
+target/classes/io/github/leothawne/TheDoctorReborn/task/RecipeTask.class
