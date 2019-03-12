@@ -31,7 +31,7 @@ public class Version {
 	private static final String Minecraft_Version = "1.13.x";
 	private static final String Minecraft_Build = "1.13-R0.1-SNAPSHOT";
 	private static final String Java_Version = "8+";
-	private static final String Update_URL = "https://leothawne.github.io/TheDoctorReborn/api/version.html";
+	private static final String Update_URL = "https://leothawne.github.io/TheDoctorReborn/api/1.13.2.html";
 	private static final String Plugin_URL = "https://leothawne.github.io/TheDoctorReborn/api/" + Plugin_Version + "/plugin.html";
 	public static final int getConfigVersion() {
 		return configFileVersion;

@@ -67,25 +67,20 @@ public class RebornAdminCommand implements CommandExecutor {
 								int Local_VersionNumber1 = Integer.parseInt(LocalVersion[0]);
 								int Local_VersionNumber2 = Integer.parseInt(LocalVersion[1]);
 								int Local_VersionNumber3 = Integer.parseInt(LocalVersion[2]);
-								String upToDate = ChatColor.AQUA + "[TDR :: Admin] " + ChatColor.YELLOW + "The plugin is up to date!";
 								String[] Server1 = HTTP.getData(Version.getUpdateURL()).split("-");
-								if(Server1[2].equals(Version.getMinecraftVersion())) {
-									String[] Server2 = Server1[0].split("\\.");
-									int Server2_VersionNumber1 = Integer.parseInt(Server2[0]);
-									int Server2_VersionNumber2 = Integer.parseInt(Server2[1]);
-									int Server2_VersionNumber3 = Integer.parseInt(Server2[2]);
-									String updateMessage = ChatColor.AQUA + "[TDR :: Admin] " + ChatColor.YELLOW + "A newer version is available: " + ChatColor.GREEN + "" + Server1[0] + "" + ChatColor.YELLOW + " (released on " + ChatColor.GREEN + "" + Server1[1] + "" + ChatColor.YELLOW + ").";
-									if(Server2_VersionNumber1 > Local_VersionNumber1) {
-										sender.sendMessage(updateMessage);
-									} else if(Server2_VersionNumber1 == Local_VersionNumber1 && Server2_VersionNumber2 > Local_VersionNumber2) {
-										sender.sendMessage(updateMessage);
-									} else if(Server2_VersionNumber1 == Local_VersionNumber1 && Server2_VersionNumber2 == Local_VersionNumber2 && Server2_VersionNumber3 > Local_VersionNumber3) {
-										sender.sendMessage(updateMessage);
-									} else {
-										sender.sendMessage(upToDate);
-									}
+								String[] Server2 = Server1[0].split("\\.");
+								int Server2_VersionNumber1 = Integer.parseInt(Server2[0]);
+								int Server2_VersionNumber2 = Integer.parseInt(Server2[1]);
+								int Server2_VersionNumber3 = Integer.parseInt(Server2[2]);
+								String updateMessage = ChatColor.AQUA + "[TDR :: Admin] " + ChatColor.YELLOW + "A newer version is available: " + ChatColor.GREEN + "" + Server1[0] + "" + ChatColor.YELLOW + " (released on " + ChatColor.GREEN + "" + Server1[1] + "" + ChatColor.YELLOW + ").";
+								if(Server2_VersionNumber1 > Local_VersionNumber1) {
+									sender.sendMessage(updateMessage);
+								} else if(Server2_VersionNumber1 == Local_VersionNumber1 && Server2_VersionNumber2 > Local_VersionNumber2) {
+									sender.sendMessage(updateMessage);
+								} else if(Server2_VersionNumber1 == Local_VersionNumber1 && Server2_VersionNumber2 == Local_VersionNumber2 && Server2_VersionNumber3 > Local_VersionNumber3) {
+									sender.sendMessage(updateMessage);
 								} else {
-									sender.sendMessage(upToDate);
+									sender.sendMessage(ChatColor.AQUA + "[TDR :: Admin] " + ChatColor.YELLOW + "The plugin is up to date!");
 								}
 							}
 						}.runTask(plugin);
