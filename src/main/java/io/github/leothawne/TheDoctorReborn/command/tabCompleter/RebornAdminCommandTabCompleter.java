@@ -33,7 +33,7 @@ public class RebornAdminCommandTabCompleter extends TabCompleterAPI implements T
 		List<String> ReturnNothing = new ArrayList<>();
 		if(sender.hasPermission("TheDoctorReborn.use") && sender.hasPermission("TheDoctorReborn.admin")) {
 			if(args.length == 1) {
-				ImmutableList<String> Reborn = ImmutableList.of("version", "info");
+				ImmutableList<String> Reborn = ImmutableList.of("version", "info", "purge");
 				return partial(args[0], Reborn);
 			} else {
 				if(args[0].equalsIgnoreCase("info") && args.length > 1 && args.length < 3) {

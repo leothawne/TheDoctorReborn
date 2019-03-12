@@ -21,11 +21,12 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.UUID;
 
+import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
-
 
 public class PlayersFileLoader {
 	public static final void check(TheDoctorReborn plugin, ConsoleLoader myLogger) {
@@ -39,7 +40,7 @@ public class PlayersFileLoader {
 			myLogger.info("Players file found.");
 		}
 	}
-	public static final void load(TheDoctorReborn plugin, ConsoleLoader myLogger, Player player, HashMap<UUID, Integer> regenerationNumber, HashMap<UUID, Boolean> isLocked, boolean init) {
+	public static final void loadPlayer(TheDoctorReborn plugin, ConsoleLoader myLogger, Player player, HashMap<UUID, Integer> regenerationNumber, HashMap<UUID, Integer> regenerationCycle, HashMap<UUID, Boolean> isLocked, boolean init) {
 		if(init == false) myLogger.info("Loading player [" + player.getName() + "]...");
 		File configFile = new File(plugin.getDataFolder(), "players.yml");
 		if(configFile.exists()) {
@@ -50,6 +51,11 @@ public class PlayersFileLoader {
 					regenerationNumber.put(player.getUniqueId(), playersConfig.getInt("players." + player.getUniqueId() + ".regeneration"));
 				} else {
 					regenerationNumber.put(player.getUniqueId(), 0);
+				}
+				if(playersConfig.isSet("players." + player.getUniqueId() + ".cycle") == true && playersConfig.isInt("players." + player.getUniqueId() + ".cycle") == true) {
+					regenerationCycle.put(player.getUniqueId(), playersConfig.getInt("players." + player.getUniqueId() + ".cycle"));
+				} else {
+					regenerationCycle.put(player.getUniqueId(), 1);
 				}
 				if(playersConfig.isSet("players." + player.getUniqueId() + ".locked") == true && playersConfig.isBoolean("players." + player.getUniqueId() + ".locked") == true) {
 					isLocked.put(player.getUniqueId(), playersConfig.getBoolean("players." + player.getUniqueId() + ".locked"));
@@ -65,7 +71,7 @@ public class PlayersFileLoader {
 			myLogger.severe("Running without players file. You will face several errors from this point.");
 		}
 	}
-	public static final void save(TheDoctorReborn plugin, ConsoleLoader myLogger, Player player, HashMap<UUID, Integer> regenerationNumber, HashMap<UUID, Boolean> isLocked, boolean init) {
+	public static final void savePlayer(TheDoctorReborn plugin, ConsoleLoader myLogger, Player player, HashMap<UUID, Integer> regenerationNumber, HashMap<UUID, Integer> regenerationCycle, HashMap<UUID, Boolean> isLocked, boolean init) {
 		if(init == false) myLogger.info("Saving player [" + player.getName() + "]...");
 		File configFile = new File(plugin.getDataFolder(), "players.yml");
 		if(configFile.exists()) {
@@ -73,10 +79,13 @@ public class PlayersFileLoader {
 			try {
 				playersConfig.load(configFile);
 				for(UUID uuid : regenerationNumber.keySet()) {
-					playersConfig.set("players." + player.getUniqueId() + ".regeneration", regenerationNumber.get(uuid));
+					playersConfig.set("players." + player.getUniqueId() + ".regeneration", regenerationNumber.get(uuid).intValue());
+				}
+				for(UUID uuid : regenerationCycle.keySet()) {
+					playersConfig.set("players." + player.getUniqueId() + ".cycle", regenerationCycle.get(uuid).intValue());
 				}
 				for(UUID uuid : isLocked.keySet()) {
-					playersConfig.set("players." + player.getUniqueId() + ".locked", isLocked.get(uuid));
+					playersConfig.set("players." + player.getUniqueId() + ".locked", isLocked.get(uuid).booleanValue());
 				}
 				playersConfig.save(configFile);
 				if(init == false) myLogger.info("Player [" + player.getName() + "] saved.");
@@ -85,6 +94,25 @@ public class PlayersFileLoader {
 			}
 		} else {
 			myLogger.severe("Players file not found! Skipping...");
+		}
+	}
+	public static final void purgePlayers(TheDoctorReborn plugin, ConsoleLoader myLogger, CommandSender sender) {
+		File configFile = new File(plugin.getDataFolder(), "players.yml");
+		if(configFile.exists()) {
+			myLogger.warning(sender.getName() + " > Purge: Deleting players.yml...");
+			sender.sendMessage(ChatColor.AQUA + "[TDR :: Admin] " + ChatColor.YELLOW + "Purge: Deleting players.yml...");
+			configFile.delete();
+			myLogger.warning(sender.getName() + " > Purge: Restoring players.yml...");
+			sender.sendMessage(ChatColor.AQUA + "[TDR :: Admin] " + ChatColor.YELLOW + "Purge: Restoring players.yml...");
+			PlayersFileLoader.check(plugin, myLogger);
+			myLogger.warning(sender.getName() + " > Purge: Done!");
+			sender.sendMessage(ChatColor.AQUA + "[TDR :: Admin] " + ChatColor.YELLOW + "Purge: Done!");
+		} else {
+			myLogger.warning(sender.getName() + " > Purge: Restoring players.yml...");
+			sender.sendMessage(ChatColor.AQUA + "[TDR :: Admin] " + ChatColor.YELLOW + "Purge: Restoring players.yml...");
+			PlayersFileLoader.check(plugin, myLogger);
+			myLogger.warning(sender.getName() + " > Purge: Done!");
+			sender.sendMessage(ChatColor.AQUA + "[TDR :: Admin] " + ChatColor.YELLOW + "Purge: Done!");
 		}
 	}
 }

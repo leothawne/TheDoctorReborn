@@ -1,12 +1,16 @@
 #If for some reason you want to disable this plugin, just set this to 'false'. Default: true.
 enable-plugin: true
 
+#INTERNAL languages available: portuguese, english. Default: english
 language: english
 
 #Should administrators be warned about new updates? Default: true.
 #If 'true', this will not bother you while you are playing. I promisse!
 update:
     check: true
+
+#Should a player see its own regeneration status after join the server? Default: true.
+status-after-login: true
 
 #Do not change this under any circumstances!
 config-version: 4

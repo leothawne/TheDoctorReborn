@@ -15,14 +15,19 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 package io.github.leothawne.TheDoctorReborn.command;
+import java.util.HashMap;
+import java.util.UUID;
+
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import io.github.leothawne.TheDoctorReborn.ConsoleLoader;
+import io.github.leothawne.TheDoctorReborn.PlayersFileLoader;
 import io.github.leothawne.TheDoctorReborn.TheDoctorReborn;
 import io.github.leothawne.TheDoctorReborn.Version;
 import io.github.leothawne.TheDoctorReborn.api.utility.HTTP;
@@ -30,10 +35,18 @@ public class RebornAdminCommand implements CommandExecutor {
 	private static TheDoctorReborn plugin;
 	private static ConsoleLoader myLogger;
 	private static FileConfiguration language;
-	public RebornAdminCommand(TheDoctorReborn plugin, ConsoleLoader myLogger, FileConfiguration language) {
+	private static HashMap<UUID, Integer> regenerationNumber;
+	private static HashMap<UUID, Integer> regenerationCycle;
+	private static HashMap<UUID, Boolean> isLocked;
+	private static HashMap<CommandSender, Boolean> purgePlayers;
+	public RebornAdminCommand(TheDoctorReborn plugin, ConsoleLoader myLogger, FileConfiguration language, HashMap<UUID, Integer> regenerationNumber, HashMap<UUID, Integer> regenerationCycle, HashMap<UUID, Boolean> isLocked, HashMap<CommandSender, Boolean> purgePlayers) {
 		RebornAdminCommand.plugin = plugin;
 		RebornAdminCommand.myLogger = myLogger;
 		RebornAdminCommand.language = language;
+		RebornAdminCommand.regenerationNumber = regenerationNumber;
+		RebornAdminCommand.regenerationCycle = regenerationCycle;
+		RebornAdminCommand.isLocked = isLocked;
+		RebornAdminCommand.purgePlayers = purgePlayers;
 	}
 	@Override
 	public final boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
@@ -81,25 +94,68 @@ public class RebornAdminCommand implements CommandExecutor {
 					}
 				} else if(args[0].equalsIgnoreCase("info")) {
 					if(args.length < 2) {
-						sender.sendMessage(ChatColor.AQUA + "[TDR :: Admin] " + ChatColor.YELLOW + language.getString("missing-timelord"));
+						sender.sendMessage(ChatColor.AQUA + "[TDR :: Admin] " + ChatColor.YELLOW + language.getString("player-missing"));
 					} else {
 						if(args.length < 3) {
-							//aqui
-							
+							@SuppressWarnings("deprecation")
+							Player onlinePlayer = plugin.getServer().getPlayer(args[1]);
+							if(onlinePlayer != null) {
+								sender.sendMessage("");
+								sender.sendMessage("");
+								sender.sendMessage(ChatColor.DARK_GREEN + onlinePlayer.getName() + ChatColor.YELLOW + " (" + ChatColor.GREEN + "Online" + ChatColor.YELLOW + ")");
+								sender.sendMessage("");
+								sender.sendMessage(ChatColor.YELLOW + "UUID: " + ChatColor.GREEN + onlinePlayer.getUniqueId() + ChatColor.YELLOW + ".");
+								sender.sendMessage(ChatColor.YELLOW + language.getString("player-health-level") + " " + ChatColor.GREEN + onlinePlayer.getHealth() + ChatColor.YELLOW + "/20.0.");
+								sender.sendMessage(ChatColor.YELLOW + language.getString("player-food-level") + " " + ChatColor.GREEN + onlinePlayer.getFoodLevel() + ChatColor.YELLOW + "/20.");
+								sender.sendMessage(ChatColor.YELLOW + language.getString("player-current-regeneration") + " " + ChatColor.GREEN + regenerationNumber.get(onlinePlayer.getUniqueId()).intValue() + ChatColor.YELLOW + "/12.");
+								sender.sendMessage(ChatColor.YELLOW + language.getString("player-cycle") + " " + ChatColor.GREEN + regenerationCycle.get(onlinePlayer.getUniqueId()).intValue() + ChatColor.YELLOW + ".");
+								String yesno;
+								if(isLocked.get(onlinePlayer.getUniqueId()).booleanValue() == true) {
+									yesno = language.getString("yes-message");
+								} else {
+									yesno = language.getString("no-message");
+								}
+								sender.sendMessage(ChatColor.YELLOW + language.getString("player-locked") + " " + ChatColor.GREEN + yesno + ChatColor.YELLOW + ".");
+								sender.sendMessage("");
+								sender.sendMessage("");
+							} else {
+								sender.sendMessage(ChatColor.AQUA + "[TDR :: Admin] " + ChatColor.YELLOW + language.getString("player-not-found"));
+							}
 						} else {
 							sender.sendMessage(ChatColor.AQUA + "[TDR :: Admin] " + ChatColor.YELLOW + language.getString("player-tma"));
 						}
+					}
+				} else if(args[0].equalsIgnoreCase("purge")) {
+					if(args.length == 1) {
+						if(!purgePlayers.containsKey(sender)) {
+							purgePlayers.put(sender, false);
+						}
+						if(purgePlayers.get(sender).booleanValue() == false) {
+							sender.sendMessage(ChatColor.AQUA + "[TDR :: Admin] " + ChatColor.RED + "Are you sure about this? If yes, you have" + ChatColor.YELLOW + " 10 seconds" + ChatColor.RED + " to type" + ChatColor.GREEN + " /rebornadmin purge" + ChatColor.RED + " again.");
+							purgePlayers.put(sender, true);
+							new BukkitRunnable() {
+								@Override
+								public final void run() {
+									purgePlayers.put(sender, false);
+								}
+							}.runTaskLater(plugin, 20 * 10);
+						} else {
+							PlayersFileLoader.purgePlayers(plugin, myLogger, sender);
+							purgePlayers.put(sender, false);
+						}
+					} else {
+						sender.sendMessage(ChatColor.AQUA + "[TDR :: Admin] " + ChatColor.YELLOW + language.getString("player-tma"));
 					}
 				} else {
 					sender.sendMessage(ChatColor.AQUA + "[TDR :: Admin] " + ChatColor.YELLOW + "Invalid command! Type " + ChatColor.GREEN + "/rebornadmin " + ChatColor.YELLOW + "to see all available commands.");
 				}
 			} else {
 				sender.sendMessage(ChatColor.AQUA + "[TDR :: Admin] " + ChatColor.YELLOW + language.getString("no-permission"));
-				myLogger.severe(sender.getName() + " don't have permission [TheDoctorReborn.admin].");
+				myLogger.severe(sender.getName() + " doesn't have permission [TheDoctorReborn.admin].");
 			}
 		} else {
 			sender.sendMessage(ChatColor.AQUA + "[TDR :: Admin] " + ChatColor.YELLOW + language.getString("no-permission"));
-			myLogger.severe(sender.getName() + " don't have permission [TheDoctorReborn.use].");
+			myLogger.severe(sender.getName() + " doesn't have permission [TheDoctorReborn.use].");
 		}
 		return true;
 	}
