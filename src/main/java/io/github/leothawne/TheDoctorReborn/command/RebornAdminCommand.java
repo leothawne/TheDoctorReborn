@@ -146,11 +146,11 @@ public class RebornAdminCommand implements CommandExecutor {
 				}
 			} else {
 				sender.sendMessage(ChatColor.AQUA + "[TDR :: Admin] " + ChatColor.YELLOW + language.getString("no-permission"));
-				myLogger.severe(sender.getName() + " doesn't have permission [TheDoctorReborn.admin].");
+				myLogger.severe(sender.getName() + " does not have permission [TheDoctorReborn.admin]: '/rebornadmin' command.");
 			}
 		} else {
 			sender.sendMessage(ChatColor.AQUA + "[TDR :: Admin] " + ChatColor.YELLOW + language.getString("no-permission"));
-			myLogger.severe(sender.getName() + " doesn't have permission [TheDoctorReborn.use].");
+			myLogger.severe(sender.getName() + " does not have permission [TheDoctorReborn.use]: '/rebornadmin' command.");
 		}
 		return true;
 	}

@@ -32,6 +32,7 @@ import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.ItemStack;
 
 import io.github.leothawne.TheDoctorReborn.ConsoleLoader;
@@ -75,6 +76,14 @@ public class PlayerEvent implements Listener {
 	public static final void onPlayerQuit(PlayerQuitEvent event) {
 		Player player = event.getPlayer();
 		PlayersFileLoader.savePlayer(plugin, myLogger, player, regenerationNumber, regenerationCycle, isLocked, false);
+		if(isRegenerating.get(player.getUniqueId()).booleanValue() == true) {
+			isRegenerating.put(player.getUniqueId(), false);
+			player.setHealth(0.0);
+			player.setFoodLevel(0);
+			if(plugin.getServer().getScheduler().isCurrentlyRunning(regenerationTaskNumber.get(player.getUniqueId()))){
+				plugin.getServer().getScheduler().cancelTask(regenerationTaskNumber.get(player.getUniqueId()));
+			}
+		}
 	}
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public static final void onPlayerDamage(EntityDamageEvent event) {
@@ -142,6 +151,17 @@ public class PlayerEvent implements Listener {
 		}
 	}
 	@EventHandler(priority = EventPriority.HIGHEST)
+	public static final void onPlayerTeleport(PlayerTeleportEvent event) {
+		Player player = event.getPlayer();
+		if(player.hasPermission("TheDoctorReborn.use")) {
+			if(isLocked.get(player.getUniqueId()).booleanValue() == false) {
+				if(isRegenerating.get(player.getUniqueId()).booleanValue() == true) {
+					event.setCancelled(true);
+				}
+			}
+		}
+	}
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public static final void onPlayerConsume(PlayerItemConsumeEvent event) {
 		Player player = event.getPlayer();
 		ItemStack item = event.getItem();
@@ -156,19 +176,19 @@ public class PlayerEvent implements Listener {
 								RegenerationAPI.playerRegenerate(plugin, language, player, regenerationNumber, regenerationCycle, isRegenerating, regenerationTaskNumber, true);
 							} else {
 								event.setCancelled(true);
-								player.performCommand("reborn info");
+								player.sendMessage(ChatColor.AQUA + "[TDR] " + ChatColor.YELLOW + language.getString("symbiotic-nuclei-error"));
 							}
 						} else {
 							event.setCancelled(true);
-							player.performCommand("reborn info");
+							player.sendMessage(ChatColor.AQUA + "[TDR] " + ChatColor.YELLOW + language.getString("symbiotic-nuclei-error"));
 						}
 					} else {
 						event.setCancelled(true);
-						player.performCommand("reborn info");
+						player.sendMessage(ChatColor.AQUA + "[TDR] " + ChatColor.YELLOW + language.getString("symbiotic-nuclei-error"));
 					}
 				} else {
 					player.sendMessage(ChatColor.AQUA + "[TDR] " + ChatColor.YELLOW + language.getString("no-permission"));
-					myLogger.severe(player.getName() + " doesn't have permission [TheDoctorReborn.use].");
+					myLogger.severe(player.getName() + " does not have permission [TheDoctorReborn.use]: Symbiotic Nuclei.");
 				}
 			}
 		}

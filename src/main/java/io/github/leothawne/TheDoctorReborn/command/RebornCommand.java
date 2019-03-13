@@ -49,8 +49,10 @@ public class RebornCommand implements CommandExecutor {
 				sender.sendMessage(ChatColor.AQUA + "=+=+=+= [The Doctor Reborn] =+=+=+=");
 				sender.sendMessage(ChatColor.GREEN + "/reborn " + ChatColor.AQUA + "- Shows all commands for The Doctor Reborn.");
 				sender.sendMessage(ChatColor.GREEN + "/reborn version " + ChatColor.AQUA + "- Shows the plugin version.");
-				sender.sendMessage(ChatColor.GREEN + "/reborn info " + ChatColor.AQUA + "- Shows your regeneration status.");
-				sender.sendMessage(ChatColor.GREEN + "/reborn lock <on/off> " + ChatColor.AQUA + "- Locks/unlocks your regeneration ability.");
+				if(sender instanceof Player) {
+					sender.sendMessage(ChatColor.GREEN + "/reborn info " + ChatColor.AQUA + "- Shows your regeneration status.");
+					sender.sendMessage(ChatColor.GREEN + "/reborn lock <on/off> " + ChatColor.AQUA + "- Locks/unlocks your regeneration ability.");
+				}
 				sender.sendMessage(ChatColor.GREEN + "/rebornadmin " + ChatColor.AQUA + "- Shows administration commands for The Doctor Reborn.");
 				sender.sendMessage(ChatColor.YELLOW + "You can also use "+ ChatColor.GREEN + "/reborn "+ ChatColor.YELLOW + "as "+ ChatColor.GREEN + "/rb"+ ChatColor.YELLOW + ".");
 			} else if(args[0].equalsIgnoreCase("version")) {
@@ -149,7 +151,7 @@ public class RebornCommand implements CommandExecutor {
 			}
 		} else {
 			sender.sendMessage(ChatColor.AQUA + "[TDR] " + ChatColor.YELLOW + language.getString("no-permission"));
-			myLogger.severe(sender.getName() + " doesn't have permission [TheDoctorReborn.use].");
+			myLogger.severe(sender.getName() + " does not have permission [TheDoctorReborn.use]: '/reborn' command.");
 		}
 		return true;
 	}
