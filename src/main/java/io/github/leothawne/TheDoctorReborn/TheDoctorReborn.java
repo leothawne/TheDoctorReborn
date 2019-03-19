@@ -35,6 +35,7 @@ import io.github.leothawne.TheDoctorReborn.event.AdminEvent;
 import io.github.leothawne.TheDoctorReborn.event.PlayerEvent;
 import io.github.leothawne.TheDoctorReborn.task.RecipeTask;
 import io.github.leothawne.TheDoctorReborn.task.RegenerationTask;
+import io.github.leothawne.TheDoctorReborn.task.VersionTask;
 
 /**
  * Main class.
@@ -59,6 +60,7 @@ public class TheDoctorReborn extends JavaPlugin {
 	private static HashMap<UUID, Integer> regenerationTaskNumber = new HashMap<UUID, Integer>();
 	private static HashMap<CommandSender, Boolean> purgePlayers = new HashMap<CommandSender, Boolean>();
 	private static BukkitScheduler scheduler;
+	private static int versionTask;
 	private static int regenerationTask;
 	private static int recipeTask;
 	/**
@@ -73,7 +75,6 @@ public class TheDoctorReborn extends JavaPlugin {
 		ConfigurationLoader.check(this, myLogger);
 		configuration = ConfigurationLoader.load(this, myLogger);
 		if(configuration.getBoolean("enable-plugin") == true) {
-			Version.check(this, myLogger);
 			MetricsLoader.init(this, myLogger, metrics);
 			LanguageLoader.check(this, myLogger, configuration);
 			language = LanguageLoader.load(this, myLogger, configuration);
@@ -88,6 +89,7 @@ public class TheDoctorReborn extends JavaPlugin {
 			getCommand("rebornadmin").setTabCompleter(new RebornAdminCommandTabCompleter());
 			registerEvents(new AdminEvent(configuration), new PlayerEvent(this, myLogger, configuration, language, regenerationNumber, regenerationCycle, isRegenerating, isLocked, regenerationTaskNumber));
 			scheduler = getServer().getScheduler();
+			versionTask = scheduler.scheduleAsyncRepeatingTask(this, new VersionTask(this, myLogger, Version.getVersionNumber(), Version.getPluginURL()), 0, 20 * 1800);
 			regenerationTask = scheduler.scheduleSyncRepeatingTask(this, new RegenerationTask(this, isRegenerating, isLocked), 0, 2);
 			recipeTask = scheduler.scheduleSyncRepeatingTask(this, new RecipeTask(this, language), 0, 20 * 1);
 		} else {
@@ -103,6 +105,9 @@ public class TheDoctorReborn extends JavaPlugin {
 	@Override
 	public final void onDisable() {
 		myLogger.info("Unloading...");
+		if(scheduler.isCurrentlyRunning(versionTask)) {
+			scheduler.cancelTask(versionTask);
+		}
 		if(scheduler.isCurrentlyRunning(regenerationTask)) {
 			scheduler.cancelTask(regenerationTask);
 		}

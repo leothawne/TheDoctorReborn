@@ -25,9 +25,14 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -86,7 +91,7 @@ public class PlayerEvent implements Listener {
 		}
 	}
 	@EventHandler(priority = EventPriority.HIGHEST)
-	public static final void onPlayerDamage(EntityDamageEvent event) {
+	public static final void onPlayerGetDamage(EntityDamageEvent event) {
 		if(event.getEntity() instanceof Player) {
 			Player player = (Player) event.getEntity();
 			if(player.hasPermission("TheDoctorReborn.use")) {
@@ -114,7 +119,7 @@ public class PlayerEvent implements Listener {
 		}
 	}
 	@EventHandler(priority = EventPriority.HIGHEST)
-	public static final void onDeath(PlayerDeathEvent event) {
+	public static final void onPlayerDeath(PlayerDeathEvent event) {
 		Player player = event.getEntity();
 		if(player.hasPermission("TheDoctorReborn.use")) {
 			if(isLocked.get(player.getUniqueId()).booleanValue() == true) {
@@ -164,16 +169,23 @@ public class PlayerEvent implements Listener {
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public static final void onPlayerConsume(PlayerItemConsumeEvent event) {
 		Player player = event.getPlayer();
-		ItemStack item = event.getItem();
-		if(item.getType().equals(SymbioticNucleiItem.getMaterial()) && item.hasItemMeta() && item.getItemMeta().getDisplayName().equals(SymbioticNucleiItem.getName())) {
-			List<String> lore1 = item.getItemMeta().getLore();
-			List<String> lore2 = SymbioticNucleiItem.getLore(language);
-			if(lore1.size() == 2 && lore1.get(1).equals(lore2.get(1))) {
-				if(player.hasPermission("TheDoctorReborn.use")) {
-					if(isLocked.get(player.getUniqueId()).booleanValue() == false) {
-						if(regenerationNumber.get(player.getUniqueId()).intValue() == 12) {
-							if(isRegenerating.get(player.getUniqueId()).booleanValue() == false) {
-								RegenerationAPI.playerRegenerate(plugin, language, player, regenerationNumber, regenerationCycle, isRegenerating, regenerationTaskNumber, true);
+		if(isRegenerating.get(player.getUniqueId()).booleanValue() == true) {
+			event.setCancelled(true);
+		} else {
+			ItemStack item = event.getItem();
+			if(item.getType().equals(SymbioticNucleiItem.getMaterial()) && item.hasItemMeta() && item.getItemMeta().getDisplayName().equals(SymbioticNucleiItem.getName())) {
+				List<String> lore1 = item.getItemMeta().getLore();
+				List<String> lore2 = SymbioticNucleiItem.getLore(language);
+				if(lore1.size() == 2 && lore1.get(1).equals(lore2.get(1))) {
+					if(player.hasPermission("TheDoctorReborn.use")) {
+						if(isLocked.get(player.getUniqueId()).booleanValue() == false) {
+							if(regenerationNumber.get(player.getUniqueId()).intValue() == 12) {
+								if(isRegenerating.get(player.getUniqueId()).booleanValue() == false) {
+									RegenerationAPI.playerRegenerate(plugin, language, player, regenerationNumber, regenerationCycle, isRegenerating, regenerationTaskNumber, true);
+								} else {
+									event.setCancelled(true);
+									player.sendMessage(ChatColor.AQUA + "[TDR] " + ChatColor.YELLOW + language.getString("symbiotic-nuclei-error"));
+								}
 							} else {
 								event.setCancelled(true);
 								player.sendMessage(ChatColor.AQUA + "[TDR] " + ChatColor.YELLOW + language.getString("symbiotic-nuclei-error"));
@@ -183,14 +195,73 @@ public class PlayerEvent implements Listener {
 							player.sendMessage(ChatColor.AQUA + "[TDR] " + ChatColor.YELLOW + language.getString("symbiotic-nuclei-error"));
 						}
 					} else {
-						event.setCancelled(true);
-						player.sendMessage(ChatColor.AQUA + "[TDR] " + ChatColor.YELLOW + language.getString("symbiotic-nuclei-error"));
+						player.sendMessage(ChatColor.AQUA + "[TDR] " + ChatColor.YELLOW + language.getString("no-permission"));
+						myLogger.severe(player.getName() + " does not have permission [TheDoctorReborn.use]: Symbiotic Nuclei.");
 					}
-				} else {
-					player.sendMessage(ChatColor.AQUA + "[TDR] " + ChatColor.YELLOW + language.getString("no-permission"));
-					myLogger.severe(player.getName() + " does not have permission [TheDoctorReborn.use]: Symbiotic Nuclei.");
 				}
 			}
 		}
 	}
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public static final void onBlockBreak(BlockBreakEvent event) {
+		Player player = event.getPlayer();
+		if(player.hasPermission("TheDoctorReborn.use")) {
+			if(isLocked.get(player.getUniqueId()).booleanValue() == false) {
+				if(isRegenerating.get(player.getUniqueId()).booleanValue() == true) {
+					event.setCancelled(true);
+				}
+			}
+		}
+	}
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public static final void onBlockPlace(BlockPlaceEvent event) {
+		Player player = event.getPlayer();
+		if(player.hasPermission("TheDoctorReborn.use")) {
+			if(isLocked.get(player.getUniqueId()).booleanValue() == false) {
+				if(isRegenerating.get(player.getUniqueId()).booleanValue() == true) {
+					event.setCancelled(true);
+				}
+			}
+		}
+	}
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public static final void onPlayerChat(AsyncPlayerChatEvent event) {
+		Player player = event.getPlayer();
+		if(player.hasPermission("TheDoctorReborn.use")) {
+			if(isLocked.get(player.getUniqueId()).booleanValue() == false) {
+				if(isRegenerating.get(player.getUniqueId()).booleanValue() == true) {
+					event.setCancelled(true);
+				}
+			}
+		}
+	}
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public static final void onPlayerCommand(PlayerCommandPreprocessEvent event) {
+		Player player = event.getPlayer();
+		if(player.hasPermission("TheDoctorReborn.use")) {
+			if(isLocked.get(player.getUniqueId()).booleanValue() == false) {
+				if(isRegenerating.get(player.getUniqueId()).booleanValue() == true) {
+					event.setCancelled(true);
+				}
+			}
+		}
+	}
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public static final void onPlayerInteract(PlayerInteractEvent event) {
+		Player player = event.getPlayer();
+		if(player.hasPermission("TheDoctorReborn.use")) {
+			if(isLocked.get(player.getUniqueId()).booleanValue() == false) {
+				if(isRegenerating.get(player.getUniqueId()).booleanValue() == true) {
+					event.setCancelled(true);
+				}
+			}
+		}
+	}
+	/*@EventHandler(priority = EventPriority.HIGHEST)
+	public static final void onPlayerDamageEntity(EntityDamageEvent event) {
+		if(!event.getEntityType().equals(EntityType.PLAYER)) {
+			Entity entity = event.getEntity();
+			entity.get
+		}
+	}*/
 }
