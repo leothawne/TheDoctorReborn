@@ -92,7 +92,6 @@ public class RebornAdminCommand implements CommandExecutor {
 						sender.sendMessage(ChatColor.AQUA + "[TDR :: Admin] " + ChatColor.YELLOW + language.getString("player-missing"));
 					} else {
 						if(args.length < 3) {
-							@SuppressWarnings("deprecation")
 							Player onlinePlayer = plugin.getServer().getPlayer(args[1]);
 							if(onlinePlayer != null) {
 								sender.sendMessage("");
