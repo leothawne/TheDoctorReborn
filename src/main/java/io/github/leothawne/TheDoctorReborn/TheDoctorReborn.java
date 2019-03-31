@@ -89,7 +89,7 @@ public class TheDoctorReborn extends JavaPlugin {
 			getCommand("rebornadmin").setTabCompleter(new RebornAdminCommandTabCompleter());
 			registerEvents(new AdminEvent(configuration), new PlayerEvent(this, myLogger, configuration, language, regenerationNumber, regenerationCycle, isRegenerating, isLocked, regenerationTaskNumber));
 			scheduler = getServer().getScheduler();
-			versionTask = scheduler.scheduleAsyncRepeatingTask(this, new VersionTask(this, myLogger, Version.getVersionNumber(), Version.getPluginURL()), 0, 20 * 1800);
+			versionTask = scheduler.scheduleAsyncRepeatingTask(this, new VersionTask(this, myLogger, Version.getVersionNumber(), Version.getPluginURL()), 0, 20 * 60 * 60);
 			regenerationTask = scheduler.scheduleSyncRepeatingTask(this, new RegenerationTask(this, isRegenerating, isLocked), 0, 2);
 			recipeTask = scheduler.scheduleSyncRepeatingTask(this, new RecipeTask(this, language), 0, 20 * 1);
 		} else {
