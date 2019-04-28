@@ -26,21 +26,19 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 import io.github.leothawne.TheDoctorReborn.ConsoleLoader;
+import io.github.leothawne.TheDoctorReborn.PlayerDataLoader;
 import io.github.leothawne.TheDoctorReborn.Version;
+import io.github.leothawne.TheDoctorReborn.type.DataSectionType;
 public class RebornCommand implements CommandExecutor {
 	private static ConsoleLoader myLogger;
 	private static FileConfiguration language;
-	private static HashMap<UUID, Integer> regenerationNumber;
-	private static HashMap<UUID, Integer> regenerationCycle;
+	private static FileConfiguration regenerationData;
 	private static HashMap<UUID, Boolean> isRegenerating;
-	private static HashMap<UUID, Boolean> isLocked;
-	public RebornCommand(ConsoleLoader myLogger, FileConfiguration language, HashMap<UUID, Integer> regenerationNumber, HashMap<UUID, Integer> regenerationCycle, HashMap<UUID, Boolean> isRegenerating, HashMap<UUID, Boolean> isLocked) {
+	public RebornCommand(ConsoleLoader myLogger, FileConfiguration language, FileConfiguration regenerationData, HashMap<UUID, Boolean> isRegenerating) {
 		RebornCommand.myLogger = myLogger;
 		RebornCommand.language = language;
-		RebornCommand.regenerationNumber = regenerationNumber;
-		RebornCommand.regenerationCycle = regenerationCycle;
+		RebornCommand.regenerationData = regenerationData;
 		RebornCommand.isRegenerating = isRegenerating;
-		RebornCommand.isLocked = isLocked;
 	}
 	@Override
 	public final boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
@@ -68,10 +66,10 @@ public class RebornCommand implements CommandExecutor {
 						if(isRegenerating.get(player.getUniqueId()).booleanValue() == false) {
 							player.sendMessage("");
 							player.sendMessage("");
-							player.sendMessage(ChatColor.YELLOW + language.getString("player-current-regeneration") + " " + ChatColor.GREEN + regenerationNumber.get(player.getUniqueId()).intValue() + ChatColor.YELLOW + "/12.");
-							player.sendMessage(ChatColor.YELLOW + language.getString("player-cycle") + " " + ChatColor.GREEN + regenerationCycle.get(player.getUniqueId()).intValue() + ChatColor.YELLOW + ".");
+							player.sendMessage(ChatColor.YELLOW + language.getString("player-current-regeneration") + " " + ChatColor.GREEN + (int) PlayerDataLoader.getPlayer(regenerationData, player, DataSectionType.REGENERATION_NUMBER) + ChatColor.YELLOW + "/12.");
+							player.sendMessage(ChatColor.YELLOW + language.getString("player-cycle") + " " + ChatColor.GREEN + (int) PlayerDataLoader.getPlayer(regenerationData, player, DataSectionType.REGENERATION_CYCLE) + ChatColor.YELLOW + ".");
 							String yesno;
-							if(isLocked.get(player.getUniqueId()).booleanValue() == true) {
+							if((boolean) PlayerDataLoader.getPlayer(regenerationData, player, DataSectionType.REGENERATION_LOCKED) == true) {
 								yesno = language.getString("yes-message");
 							} else {
 								yesno = language.getString("no-message");
@@ -101,8 +99,8 @@ public class RebornCommand implements CommandExecutor {
 							Player player = (Player) sender;
 							if(isRegenerating.get(player.getUniqueId()).booleanValue() == false) {
 								if(args[1].equalsIgnoreCase("on")) {
-									if(isLocked.get(player.getUniqueId()).booleanValue() == false) {
-										isLocked.put(player.getUniqueId(), true);
+									if((boolean) PlayerDataLoader.getPlayer(regenerationData, player, DataSectionType.REGENERATION_LOCKED) == false) {
+										PlayerDataLoader.setPlayer(regenerationData, player, DataSectionType.REGENERATION_LOCKED, true);
 										player.sendMessage("");
 										player.sendMessage("");
 										player.sendMessage(ChatColor.AQUA + "[TDR] " + ChatColor.YELLOW + language.getString("locked"));
@@ -117,8 +115,8 @@ public class RebornCommand implements CommandExecutor {
 									}
 								}
 								if(args[1].equalsIgnoreCase("off")) {
-									if(isLocked.get(player.getUniqueId()).booleanValue() == true) {
-										isLocked.put(player.getUniqueId(), false);
+									if((boolean) PlayerDataLoader.getPlayer(regenerationData, player, DataSectionType.REGENERATION_LOCKED) == true) {
+										PlayerDataLoader.setPlayer(regenerationData, player, DataSectionType.REGENERATION_LOCKED, false);
 										player.sendMessage("");
 										player.sendMessage("");
 										player.sendMessage(ChatColor.AQUA + "[TDR] " + ChatColor.YELLOW + language.getString("unlocked"));

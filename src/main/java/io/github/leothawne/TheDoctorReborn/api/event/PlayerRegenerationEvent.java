@@ -1,22 +1,24 @@
 package io.github.leothawne.TheDoctorReborn.api.event;
 
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
+import io.github.leothawne.TheDoctorReborn.PlayerDataLoader;
+import io.github.leothawne.TheDoctorReborn.type.DataSectionType;
+
 public class PlayerRegenerationEvent extends Event {
 	private static Player player;
-	private static int regenerationNumber;
-	private static int regenerationCycle;
+	private static FileConfiguration regenerationData;
 	private static boolean usingSymbioticNuclei;
 	private static double healthLevel;
 	private static int foodLevel;
 	private static int regenerationTaskNumber;
 	private static final HandlerList handlers = new HandlerList();
-	public PlayerRegenerationEvent(Player player, int regenerationNumber, int regenerationCycle, boolean usingSymbioticNuclei, double healthLevel, int foodLevel, int regenerationTaskNumber) {
+	public PlayerRegenerationEvent(Player player, FileConfiguration regenerationData, boolean usingSymbioticNuclei, double healthLevel, int foodLevel, int regenerationTaskNumber) {
 		PlayerRegenerationEvent.player = player;
-		PlayerRegenerationEvent.regenerationNumber = regenerationNumber;
-		PlayerRegenerationEvent.regenerationCycle = regenerationCycle;
+		PlayerRegenerationEvent.regenerationData = regenerationData;
 		PlayerRegenerationEvent.usingSymbioticNuclei = usingSymbioticNuclei;
 		PlayerRegenerationEvent.healthLevel = healthLevel;
 		PlayerRegenerationEvent.foodLevel = foodLevel;
@@ -26,10 +28,10 @@ public class PlayerRegenerationEvent extends Event {
 		return PlayerRegenerationEvent.player;
 	}
 	public final int getRegenerationNumber() {
-		return PlayerRegenerationEvent.regenerationNumber;
+		return (int) PlayerDataLoader.getPlayer(regenerationData, player, DataSectionType.REGENERATION_NUMBER);
 	}
 	public final int getRegenerationCycle() {
-		return PlayerRegenerationEvent.regenerationCycle;
+		return (int) PlayerDataLoader.getPlayer(regenerationData, player, DataSectionType.REGENERATION_CYCLE);
 	}
 	public final boolean isUsingSymbioticNuclei() {
 		return PlayerRegenerationEvent.usingSymbioticNuclei;

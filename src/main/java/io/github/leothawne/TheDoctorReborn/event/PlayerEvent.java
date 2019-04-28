@@ -30,6 +30,8 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -41,35 +43,33 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.ItemStack;
 
 import io.github.leothawne.TheDoctorReborn.ConsoleLoader;
-import io.github.leothawne.TheDoctorReborn.PlayersFileLoader;
+import io.github.leothawne.TheDoctorReborn.PlayerDataLoader;
 import io.github.leothawne.TheDoctorReborn.TheDoctorReborn;
 import io.github.leothawne.TheDoctorReborn.api.utility.RegenerationAPI;
+import io.github.leothawne.TheDoctorReborn.api.utility.SpigotAPI;
 import io.github.leothawne.TheDoctorReborn.item.SymbioticNucleiItem;
+import io.github.leothawne.TheDoctorReborn.type.DataSectionType;
 public class PlayerEvent implements Listener {
 	private static TheDoctorReborn plugin;
 	private static ConsoleLoader myLogger;
 	private static FileConfiguration configuration;
 	private static FileConfiguration language;
-	private static HashMap<UUID, Integer> regenerationNumber;
-	private static HashMap<UUID, Integer> regenerationCycle;
+	private static FileConfiguration regenerationData;
 	private static HashMap<UUID, Boolean> isRegenerating;
-	private static HashMap<UUID, Boolean> isLocked;
 	private static HashMap<UUID, Integer> regenerationTaskNumber;
-	public PlayerEvent(TheDoctorReborn plugin, ConsoleLoader myLogger, FileConfiguration configuration, FileConfiguration language, HashMap<UUID, Integer> regenerationNumber, HashMap<UUID, Integer> regenerationCycle, HashMap<UUID, Boolean> isRegenerating, HashMap<UUID, Boolean> isLocked, HashMap<UUID, Integer> regenerationTaskNumber) {
+	public PlayerEvent(TheDoctorReborn plugin, ConsoleLoader myLogger, FileConfiguration configuration, FileConfiguration language, FileConfiguration regenerationData, HashMap<UUID, Boolean> isRegenerating, HashMap<UUID, Integer> regenerationTaskNumber) {
 		PlayerEvent.plugin = plugin;
 		PlayerEvent.myLogger = myLogger;
 		PlayerEvent.configuration = configuration;
 		PlayerEvent.language= language;
-		PlayerEvent.regenerationNumber = regenerationNumber;
-		PlayerEvent.regenerationCycle = regenerationCycle;
+		PlayerEvent.regenerationData = regenerationData;
 		PlayerEvent.isRegenerating = isRegenerating;
-		PlayerEvent.isLocked = isLocked;
 		PlayerEvent.regenerationTaskNumber = regenerationTaskNumber;
 	}
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public static final void onPlayerJoin(PlayerJoinEvent event) {
 		Player player = event.getPlayer();
-		PlayersFileLoader.loadPlayer(plugin, myLogger, player, regenerationNumber, regenerationCycle, isLocked, false);
+		PlayerDataLoader.checkPlayer(regenerationData, player);
 		isRegenerating.put(player.getUniqueId(), false);
 		if(player.hasPermission("TheDoctorReborn.use")) {
 			if(configuration.getBoolean("status-after-login") == true) {
@@ -80,7 +80,6 @@ public class PlayerEvent implements Listener {
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public static final void onPlayerQuit(PlayerQuitEvent event) {
 		Player player = event.getPlayer();
-		PlayersFileLoader.savePlayer(plugin, myLogger, player, regenerationNumber, regenerationCycle, isLocked, false);
 		if(isRegenerating.get(player.getUniqueId()).booleanValue() == true) {
 			isRegenerating.put(player.getUniqueId(), false);
 			player.setHealth(0.0);
@@ -95,17 +94,17 @@ public class PlayerEvent implements Listener {
 		if(event.getEntity() instanceof Player) {
 			Player player = (Player) event.getEntity();
 			if(player.hasPermission("TheDoctorReborn.use")) {
-				if(regenerationNumber.get(player.getUniqueId()).intValue() < 12) {
-					if(isLocked.get(player.getUniqueId()).booleanValue() == false) {
+				if((int) PlayerDataLoader.getPlayer(regenerationData, player, DataSectionType.REGENERATION_NUMBER) < 12) {
+					if((boolean) PlayerDataLoader.getPlayer(regenerationData, player, DataSectionType.REGENERATION_LOCKED) == false) {
 						if(isRegenerating.get(player.getUniqueId()).booleanValue() == false) {
-							if(event.getFinalDamage() > player.getHealth()) {
+							if(event.getFinalDamage() > player.getHealth() && !event.getCause().equals(DamageCause.SUICIDE)) {
 								event.setCancelled(true);
 								player.setHealth(20.0);
 								player.setFoodLevel(20);
 								if(event.getCause().equals(DamageCause.VOID)) {
 									player.teleport(player.getLocation().getWorld().getSpawnLocation());
 								} else {
-									RegenerationAPI.playerRegenerate(plugin, language, player, regenerationNumber, regenerationCycle, isRegenerating, regenerationTaskNumber, false);
+									RegenerationAPI.playerRegenerate(plugin, language, regenerationData, player, isRegenerating, regenerationTaskNumber, false);
 								}
 							}
 						} else {
@@ -122,12 +121,12 @@ public class PlayerEvent implements Listener {
 	public static final void onPlayerDeath(PlayerDeathEvent event) {
 		Player player = event.getEntity();
 		if(player.hasPermission("TheDoctorReborn.use")) {
-			if(isLocked.get(player.getUniqueId()).booleanValue() == true) {
+			if((boolean) PlayerDataLoader.getPlayer(regenerationData, player, DataSectionType.REGENERATION_LOCKED) == true) {
 				for(Player players : plugin.getServer().getOnlinePlayers()) {
 					players.sendMessage(player.getName() + " " + language.getString("regeneration-refused"));
 				}
 			} else {
-				if(regenerationNumber.get(player.getUniqueId()).intValue() == 12) {
+				if((int) PlayerDataLoader.getPlayer(regenerationData, player, DataSectionType.REGENERATION_NUMBER) == 12) {
 					for(Player players : plugin.getServer().getOnlinePlayers()) {
 						players.sendMessage(player.getName() + " " + language.getString("regeneration-ended"));
 					}
@@ -142,13 +141,16 @@ public class PlayerEvent implements Listener {
 					myLogger.severe(player.getName() + " died for no reason!");
 				}
 			}
+			if(SpigotAPI.isSpigot() == true) {
+				player.spigot().respawn();
+			}
 		}
 	}
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public static final void onPlayerMove(PlayerMoveEvent event) {
 		Player player = event.getPlayer();
 		if(player.hasPermission("TheDoctorReborn.use")) {
-			if(isLocked.get(player.getUniqueId()).booleanValue() == false) {
+			if((boolean) PlayerDataLoader.getPlayer(regenerationData, player, DataSectionType.REGENERATION_LOCKED) == false) {
 				if(isRegenerating.get(player.getUniqueId()).booleanValue() == true) {
 					event.setCancelled(true);
 				}
@@ -159,7 +161,7 @@ public class PlayerEvent implements Listener {
 	public static final void onPlayerTeleport(PlayerTeleportEvent event) {
 		Player player = event.getPlayer();
 		if(player.hasPermission("TheDoctorReborn.use")) {
-			if(isLocked.get(player.getUniqueId()).booleanValue() == false) {
+			if((boolean) PlayerDataLoader.getPlayer(regenerationData, player, DataSectionType.REGENERATION_LOCKED) == false) {
 				if(isRegenerating.get(player.getUniqueId()).booleanValue() == true) {
 					event.setCancelled(true);
 				}
@@ -178,10 +180,10 @@ public class PlayerEvent implements Listener {
 				List<String> lore2 = SymbioticNucleiItem.getLore(language);
 				if(lore1.size() == 2 && lore1.get(1).equals(lore2.get(1))) {
 					if(player.hasPermission("TheDoctorReborn.use")) {
-						if(isLocked.get(player.getUniqueId()).booleanValue() == false) {
-							if(regenerationNumber.get(player.getUniqueId()).intValue() == 12) {
+						if((boolean) PlayerDataLoader.getPlayer(regenerationData, player, DataSectionType.REGENERATION_LOCKED) == false) {
+							if((int) PlayerDataLoader.getPlayer(regenerationData, player, DataSectionType.REGENERATION_NUMBER) == 12) {
 								if(isRegenerating.get(player.getUniqueId()).booleanValue() == false) {
-									RegenerationAPI.playerRegenerate(plugin, language, player, regenerationNumber, regenerationCycle, isRegenerating, regenerationTaskNumber, true);
+									RegenerationAPI.playerRegenerate(plugin, language, regenerationData, player, isRegenerating, regenerationTaskNumber, true);
 								} else {
 									event.setCancelled(true);
 									player.sendMessage(ChatColor.AQUA + "[TDR] " + ChatColor.YELLOW + language.getString("symbiotic-nuclei-error"));
@@ -206,7 +208,7 @@ public class PlayerEvent implements Listener {
 	public static final void onBlockBreak(BlockBreakEvent event) {
 		Player player = event.getPlayer();
 		if(player.hasPermission("TheDoctorReborn.use")) {
-			if(isLocked.get(player.getUniqueId()).booleanValue() == false) {
+			if((boolean) PlayerDataLoader.getPlayer(regenerationData, player, DataSectionType.REGENERATION_LOCKED) == false) {
 				if(isRegenerating.get(player.getUniqueId()).booleanValue() == true) {
 					event.setCancelled(true);
 				}
@@ -217,7 +219,7 @@ public class PlayerEvent implements Listener {
 	public static final void onBlockPlace(BlockPlaceEvent event) {
 		Player player = event.getPlayer();
 		if(player.hasPermission("TheDoctorReborn.use")) {
-			if(isLocked.get(player.getUniqueId()).booleanValue() == false) {
+			if((boolean) PlayerDataLoader.getPlayer(regenerationData, player, DataSectionType.REGENERATION_LOCKED) == false) {
 				if(isRegenerating.get(player.getUniqueId()).booleanValue() == true) {
 					event.setCancelled(true);
 				}
@@ -228,7 +230,7 @@ public class PlayerEvent implements Listener {
 	public static final void onPlayerChat(AsyncPlayerChatEvent event) {
 		Player player = event.getPlayer();
 		if(player.hasPermission("TheDoctorReborn.use")) {
-			if(isLocked.get(player.getUniqueId()).booleanValue() == false) {
+			if((boolean) PlayerDataLoader.getPlayer(regenerationData, player, DataSectionType.REGENERATION_LOCKED) == false) {
 				if(isRegenerating.get(player.getUniqueId()).booleanValue() == true) {
 					event.setCancelled(true);
 				}
@@ -239,7 +241,7 @@ public class PlayerEvent implements Listener {
 	public static final void onPlayerCommand(PlayerCommandPreprocessEvent event) {
 		Player player = event.getPlayer();
 		if(player.hasPermission("TheDoctorReborn.use")) {
-			if(isLocked.get(player.getUniqueId()).booleanValue() == false) {
+			if((boolean) PlayerDataLoader.getPlayer(regenerationData, player, DataSectionType.REGENERATION_LOCKED) == false) {
 				if(isRegenerating.get(player.getUniqueId()).booleanValue() == true) {
 					event.setCancelled(true);
 				}
@@ -250,7 +252,29 @@ public class PlayerEvent implements Listener {
 	public static final void onPlayerInteract(PlayerInteractEvent event) {
 		Player player = event.getPlayer();
 		if(player.hasPermission("TheDoctorReborn.use")) {
-			if(isLocked.get(player.getUniqueId()).booleanValue() == false) {
+			if((boolean) PlayerDataLoader.getPlayer(regenerationData, player, DataSectionType.REGENERATION_LOCKED) == false) {
+				if(isRegenerating.get(player.getUniqueId()).booleanValue() == true) {
+					event.setCancelled(true);
+				}
+			}
+		}
+	}
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public static final void onInventoryOpen(InventoryOpenEvent event) {
+		Player player = (Player) event.getPlayer();
+		if(player.hasPermission("TheDoctorReborn.use")) {
+			if((boolean) PlayerDataLoader.getPlayer(regenerationData, player, DataSectionType.REGENERATION_LOCKED) == false) {
+				if(isRegenerating.get(player.getUniqueId()).booleanValue() == true) {
+					event.setCancelled(true);
+				}
+			}
+		}
+	}
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public static final void onInventoryClick(InventoryClickEvent event) {
+		Player player = (Player) event.getWhoClicked();
+		if(player.hasPermission("TheDoctorReborn.use")) {
+			if((boolean) PlayerDataLoader.getPlayer(regenerationData, player, DataSectionType.REGENERATION_LOCKED) == false) {
 				if(isRegenerating.get(player.getUniqueId()).booleanValue() == true) {
 					event.setCancelled(true);
 				}

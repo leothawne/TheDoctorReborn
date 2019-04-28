@@ -19,7 +19,6 @@ import java.util.HashMap;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
-import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
@@ -53,12 +52,9 @@ public class TheDoctorReborn extends JavaPlugin {
 	private static FileConfiguration configuration;
 	private static FileConfiguration language;
 	private static MetricsAPI metrics;
-	private static HashMap<UUID, Integer> regenerationNumber = new HashMap<UUID, Integer>();
-	private static HashMap<UUID, Integer> regenerationCycle = new HashMap<UUID, Integer>();
+	private static FileConfiguration regenerationData;
 	private static HashMap<UUID, Boolean> isRegenerating = new HashMap<UUID, Boolean>();
-	private static HashMap<UUID, Boolean> isLocked = new HashMap<UUID, Boolean>();
 	private static HashMap<UUID, Integer> regenerationTaskNumber = new HashMap<UUID, Integer>();
-	private static HashMap<CommandSender, Boolean> purgePlayers = new HashMap<CommandSender, Boolean>();
 	private static BukkitScheduler scheduler;
 	private static int versionTask;
 	private static int regenerationTask;
@@ -78,19 +74,20 @@ public class TheDoctorReborn extends JavaPlugin {
 			MetricsLoader.init(this, myLogger, metrics);
 			LanguageLoader.check(this, myLogger, configuration);
 			language = LanguageLoader.load(this, myLogger, configuration);
-			PlayersFileLoader.check(this, myLogger);
+			PlayerDataLoader.check(this, myLogger);
+			regenerationData = PlayerDataLoader.load(this, myLogger);
 			for(Player player : getServer().getOnlinePlayers()) {
-				PlayersFileLoader.loadPlayer(this, myLogger, player, regenerationNumber, regenerationCycle, isLocked, true);
+				PlayerDataLoader.checkPlayer(regenerationData, player);
 				isRegenerating.put(player.getUniqueId(), false);
 			}
-			getCommand("reborn").setExecutor(new RebornCommand(myLogger, language, regenerationNumber, regenerationCycle, isRegenerating, isLocked));
+			getCommand("reborn").setExecutor(new RebornCommand(myLogger, language, regenerationData, isRegenerating));
 			getCommand("reborn").setTabCompleter(new RebornCommandTabCompleter());
-			getCommand("rebornadmin").setExecutor(new RebornAdminCommand(this, myLogger, language, regenerationNumber, regenerationCycle, isLocked, purgePlayers));
+			getCommand("rebornadmin").setExecutor(new RebornAdminCommand(this, myLogger, language, regenerationData));
 			getCommand("rebornadmin").setTabCompleter(new RebornAdminCommandTabCompleter());
-			registerEvents(new AdminEvent(configuration), new PlayerEvent(this, myLogger, configuration, language, regenerationNumber, regenerationCycle, isRegenerating, isLocked, regenerationTaskNumber));
+			registerEvents(new AdminEvent(configuration), new PlayerEvent(this, myLogger, configuration, language, regenerationData, isRegenerating, regenerationTaskNumber));
 			scheduler = getServer().getScheduler();
 			versionTask = scheduler.scheduleAsyncRepeatingTask(this, new VersionTask(this, myLogger, Version.getVersionNumber(), Version.getPluginURL()), 0, 20 * 60 * 60);
-			regenerationTask = scheduler.scheduleSyncRepeatingTask(this, new RegenerationTask(this, isRegenerating, isLocked), 0, 2);
+			regenerationTask = scheduler.scheduleSyncRepeatingTask(this, new RegenerationTask(this, regenerationData, isRegenerating), 0, 2);
 			recipeTask = scheduler.scheduleSyncRepeatingTask(this, new RecipeTask(this, language), 0, 20 * 1);
 		} else {
 			myLogger.severe("You choose to disable this plugin.");
@@ -114,9 +111,6 @@ public class TheDoctorReborn extends JavaPlugin {
 		if(scheduler.isCurrentlyRunning(recipeTask)) {
 			scheduler.cancelTask(recipeTask);
 		}
-		for(Player player : getServer().getOnlinePlayers()) {
-			PlayersFileLoader.savePlayer(this, myLogger, player, regenerationNumber, regenerationCycle, isLocked, true);
-		}
-		RecipeTask.resetRecipes(this);
+		PlayerDataLoader.save(this, myLogger, regenerationData);
 	}
 }

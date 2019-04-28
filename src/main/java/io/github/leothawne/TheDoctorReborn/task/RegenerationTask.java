@@ -21,24 +21,27 @@ import java.util.UUID;
 
 import org.bukkit.Effect;
 import org.bukkit.Sound;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
+import io.github.leothawne.TheDoctorReborn.PlayerDataLoader;
 import io.github.leothawne.TheDoctorReborn.TheDoctorReborn;
+import io.github.leothawne.TheDoctorReborn.type.DataSectionType;
 
 public class RegenerationTask implements Runnable {
 	private static TheDoctorReborn plugin;
+	private static FileConfiguration regenerationData;
 	private static HashMap<UUID, Boolean> isRegenerating;
-	private static HashMap<UUID, Boolean> isLocked;
-	public RegenerationTask(TheDoctorReborn plugin, HashMap<UUID, Boolean> isRegenerating, HashMap<UUID, Boolean> isLocked) {
+	public RegenerationTask(TheDoctorReborn plugin, FileConfiguration regenerationData, HashMap<UUID, Boolean> isRegenerating) {
 		RegenerationTask.plugin = plugin;
+		RegenerationTask.regenerationData = regenerationData;
 		RegenerationTask.isRegenerating = isRegenerating;
-		RegenerationTask.isLocked = isLocked;
 	}
 	@Override
 	public final void run() {
 		for(Player player : plugin.getServer().getOnlinePlayers()) {
 			if(player.hasPermission("TheDoctorReborn.use")) {
-				if(isLocked.get(player.getUniqueId()).booleanValue() == false) {
+				if((boolean) PlayerDataLoader.getPlayer(regenerationData, player, DataSectionType.REGENERATION_LOCKED) == false) {
 					if(isRegenerating.get(player.getUniqueId()).booleanValue() == true) {
 						plugin.getServer().getWorld(player.getLocation().getWorld().getUID()).playEffect(player.getLocation(), Effect.MOBSPAWNER_FLAMES, 100);
 						plugin.getServer().getWorld(player.getLocation().getWorld().getUID()).playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1F, 1F);

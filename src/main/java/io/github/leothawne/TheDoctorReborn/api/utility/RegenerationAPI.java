@@ -27,27 +27,29 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
+import io.github.leothawne.TheDoctorReborn.PlayerDataLoader;
 import io.github.leothawne.TheDoctorReborn.TheDoctorReborn;
+import io.github.leothawne.TheDoctorReborn.type.DataSectionType;
 
 public class RegenerationAPI {
-	public static final void playerRegenerate(TheDoctorReborn plugin, FileConfiguration language, Player player, HashMap<UUID, Integer> regenerationNumber, HashMap<UUID, Integer> regenerationCycle, HashMap<UUID, Boolean> isRegenerating, HashMap<UUID, Integer> regenerationTaskNumber, boolean symbioticNuclei) {
+	public static final void playerRegenerate(TheDoctorReborn plugin, FileConfiguration language, FileConfiguration regenerationData, Player player, HashMap<UUID, Boolean> isRegenerating, HashMap<UUID, Integer> regenerationTaskNumber, boolean symbioticNuclei) {
 		player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20 * 14, 1));
 		player.sendTitle(ChatColor.BLUE + language.getString("player-regenerating"), "", 20 * 1, 20 * 11, 20 * 1);
 		isRegenerating.put(player.getUniqueId(), true);
 		int newNumber;
 		if(symbioticNuclei) {
-			newNumber = regenerationCycle.get(player.getUniqueId()) + 1;
+			newNumber = (int) PlayerDataLoader.getPlayer(regenerationData, player, DataSectionType.REGENERATION_CYCLE) + 1;
 		} else {
-			newNumber = regenerationNumber.get(player.getUniqueId()) + 1;
+			newNumber = (int) PlayerDataLoader.getPlayer(regenerationData, player, DataSectionType.REGENERATION_NUMBER) + 1;
 		}
 		BukkitTask task = new BukkitRunnable() {
 			@Override
 			public final void run() {
 				if(symbioticNuclei) {
-					regenerationCycle.put(player.getUniqueId(), newNumber);
-					regenerationNumber.put(player.getUniqueId(), 0);
+					PlayerDataLoader.setPlayer(regenerationData, player, DataSectionType.REGENERATION_CYCLE, newNumber);
+					PlayerDataLoader.setPlayer(regenerationData, player, DataSectionType.REGENERATION_NUMBER, 0);
 				} else {
-					regenerationNumber.put(player.getUniqueId(), newNumber);
+					PlayerDataLoader.setPlayer(regenerationData, player, DataSectionType.REGENERATION_NUMBER, newNumber);
 				}
 				isRegenerating.put(player.getUniqueId(), false);
 				player.addPotionEffect(new PotionEffect(PotionEffectType.HEALTH_BOOST, 20 * 120, 14));

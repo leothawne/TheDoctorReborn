@@ -36,7 +36,4 @@ public class RecipeTask implements Runnable {
 			
 		}
 	}
-	public static final void resetRecipes(TheDoctorReborn plugin) {
-		plugin.getServer().resetRecipes();
-	}
 }
