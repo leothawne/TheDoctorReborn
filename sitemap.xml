@@ -3,26 +3,26 @@
 	<url>
 		<loc>https://leothawne.github.io/TheDoctorReborn/index.html</loc>
 		<changefreq>monthly</changefreq>
-		<priority>0.8</priority>
+		<priority>1.0</priority>
 	</url>
 	<url>
 		<loc>https://leothawne.github.io/TheDoctorReborn/commands.html</loc>
 		<changefreq>monthly</changefreq>
-		<priority>0.8</priority>
+		<priority>0.5</priority>
 	</url>
 	<url>
 		<loc>https://leothawne.github.io/TheDoctorReborn/configuration.html</loc>
 		<changefreq>monthly</changefreq>
-		<priority>0.8</priority>
+		<priority>0.5</priority>
 	</url>
 	<url>
 		<loc>https://leothawne.github.io/TheDoctorReborn/permissions.html</loc>
 		<changefreq>monthly</changefreq>
-		<priority>0.8</priority>
+		<priority>0.5</priority>
 	</url>
 	<url>
 		<loc>https://leothawne.github.io/TheDoctorReborn/recipes.html</loc>
 		<changefreq>monthly</changefreq>
-		<priority>0.8</priority>
+		<priority>0.5</priority>
 	</url>
 </urlset>
