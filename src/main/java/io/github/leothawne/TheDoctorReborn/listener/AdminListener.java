@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 Murilo Amaral Nappi (murilonappi@gmail.com)
+ * Copyright (C) 2019 Murilo Amaral Nappi
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package io.github.leothawne.TheDoctorReborn.event;
+package io.github.leothawne.TheDoctorReborn.listener;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -23,18 +23,14 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
-public class AdminEvent implements Listener {
-	private static FileConfiguration configuration;
-	public AdminEvent(FileConfiguration configuration) {
-		AdminEvent.configuration = configuration;
+public final class AdminListener implements Listener {
+	private FileConfiguration configuration;
+	public AdminListener(final FileConfiguration configuration) {
+		this.configuration = configuration;
 	}
 	@EventHandler(priority = EventPriority.HIGHEST)
-	public static final void onPlayerJoin(PlayerJoinEvent event) {
-		Player player = (Player) event.getPlayer();
-		if(player.hasPermission("TheDoctorReborn.use") && player.hasPermission("TheDoctorReborn.admin")) {
-			if(configuration.getBoolean("update.check") == true) {
-				player.performCommand("rebornadmin version");
-			}
-		}
+	public final void onPlayerJoin(final PlayerJoinEvent event) {
+		final Player player = (Player) event.getPlayer();
+		if(player.hasPermission("TheDoctorReborn.admin") || player.isOp()) if(this.configuration.getBoolean("update.check")) player.performCommand("rebornadmin update");
 	}
 }

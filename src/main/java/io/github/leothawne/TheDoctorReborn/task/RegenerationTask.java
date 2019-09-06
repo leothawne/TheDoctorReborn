@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 Murilo Amaral Nappi (murilonappi@gmail.com)
+ * Copyright (C) 2019 Murilo Amaral Nappi
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,31 +24,27 @@ import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
-import io.github.leothawne.TheDoctorReborn.PlayerDataLoader;
 import io.github.leothawne.TheDoctorReborn.TheDoctorReborn;
-import io.github.leothawne.TheDoctorReborn.type.DataSectionType;
+import io.github.leothawne.TheDoctorReborn.module.StorageModule;
+import io.github.leothawne.TheDoctorReborn.type.DataType;
 
-public class RegenerationTask implements Runnable {
-	private static TheDoctorReborn plugin;
-	private static FileConfiguration regenerationData;
-	private static HashMap<UUID, Boolean> isRegenerating;
-	public RegenerationTask(TheDoctorReborn plugin, FileConfiguration regenerationData, HashMap<UUID, Boolean> isRegenerating) {
-		RegenerationTask.plugin = plugin;
-		RegenerationTask.regenerationData = regenerationData;
-		RegenerationTask.isRegenerating = isRegenerating;
+public final class RegenerationTask implements Runnable {
+	private TheDoctorReborn plugin;
+	private FileConfiguration regenerationData;
+	private HashMap<UUID, Boolean> isRegenerating;
+	public RegenerationTask(final TheDoctorReborn plugin, final FileConfiguration regenerationData, final HashMap<UUID, Boolean> isRegenerating) {
+		this.plugin = plugin;
+		this.regenerationData = regenerationData;
+		this.isRegenerating = isRegenerating;
 	}
 	@Override
 	public final void run() {
-		for(Player player : plugin.getServer().getOnlinePlayers()) {
-			if(player.hasPermission("TheDoctorReborn.use")) {
-				if((boolean) PlayerDataLoader.getPlayer(regenerationData, player, DataSectionType.REGENERATION_LOCKED) == false) {
-					if(isRegenerating.get(player.getUniqueId()).booleanValue() == true) {
-						plugin.getServer().getWorld(player.getLocation().getWorld().getUID()).playEffect(player.getLocation(), Effect.MOBSPAWNER_FLAMES, 100);
-						plugin.getServer().getWorld(player.getLocation().getWorld().getUID()).playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1F, 1F);
-						plugin.getServer().getWorld(player.getLocation().getWorld().getUID()).playSound(player.getLocation(), Sound.BLOCK_GLASS_BREAK, 1F, 1F);
-						plugin.getServer().getWorld(player.getLocation().getWorld().getUID()).playSound(player.getLocation(), Sound.ENTITY_GENERIC_BURN, 1F, 1F);
-					}
-				}
+		for(final Player player : this.plugin.getServer().getOnlinePlayers()) {
+			if(player.hasPermission("TheDoctorReborn.use")) if((boolean) StorageModule.getPlayer(this.regenerationData, player, DataType.REGENERATION_LOCKED) == false) if(this.isRegenerating.get(player.getUniqueId()).booleanValue() == true) {
+				this.plugin.getServer().getWorld(player.getLocation().getWorld().getUID()).playEffect(player.getLocation(), Effect.MOBSPAWNER_FLAMES, 100);
+				this.plugin.getServer().getWorld(player.getLocation().getWorld().getUID()).playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1F, 1F);
+				this.plugin.getServer().getWorld(player.getLocation().getWorld().getUID()).playSound(player.getLocation(), Sound.BLOCK_GLASS_BREAK, 1F, 1F);
+				this.plugin.getServer().getWorld(player.getLocation().getWorld().getUID()).playSound(player.getLocation(), Sound.ENTITY_GENERIC_BURN, 1F, 1F);
 			}
 		}
 	}

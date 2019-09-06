@@ -14,24 +14,18 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package io.github.leothawne.TheDoctorReborn.task;
-
-import org.bukkit.configuration.file.FileConfiguration;
+package io.github.leothawne.TheDoctorReborn.module;
 
 import io.github.leothawne.TheDoctorReborn.TheDoctorReborn;
-import io.github.leothawne.TheDoctorReborn.item.SymbioticNucleiItem;
+import io.github.leothawne.TheDoctorReborn.api.MetricsAPI;
 
-public final class RecipeTask implements Runnable {
-	private TheDoctorReborn plugin;
-	private FileConfiguration language;
-	public RecipeTask(final TheDoctorReborn plugin, final FileConfiguration language) {
-		this.plugin = plugin;
-		this.language = language;
-	}
-	@Override
-	public final void run() {
-		try {
-			this.plugin.getServer().addRecipe(SymbioticNucleiItem.getRecipe(this.plugin, this.language));
-		} catch(IllegalStateException exception) {}
+public final class MetricsModule {
+	private MetricsModule() {}
+	public static final MetricsAPI init(final TheDoctorReborn plugin, final ConsoleModule console) {
+		final MetricsAPI metrics = new MetricsAPI(plugin);
+		if(!metrics.isEnabled()) {
+			console.warning(plugin.getDescription().getName() + " has detected that bStats is disabled. Enable it so we can collect data that will help us improve future versions of the plugin. Read more at: https://bstats.org/getting-started");
+		}
+		return metrics;
 	}
 }

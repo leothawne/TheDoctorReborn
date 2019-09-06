@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 Murilo Amaral Nappi (murilonappi@gmail.com)
+ * Copyright (C) 2019 Murilo Amaral Nappi
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,6 +15,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 package io.github.leothawne.TheDoctorReborn;
+
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -25,13 +26,19 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
 
-import io.github.leothawne.TheDoctorReborn.api.bStats.MetricsAPI;
+import io.github.leothawne.TheDoctorReborn.api.MetricsAPI;
+import io.github.leothawne.TheDoctorReborn.api.TheDoctorRebornAPI;
 import io.github.leothawne.TheDoctorReborn.command.RebornAdminCommand;
 import io.github.leothawne.TheDoctorReborn.command.RebornCommand;
 import io.github.leothawne.TheDoctorReborn.command.tabCompleter.RebornAdminCommandTabCompleter;
 import io.github.leothawne.TheDoctorReborn.command.tabCompleter.RebornCommandTabCompleter;
-import io.github.leothawne.TheDoctorReborn.event.AdminEvent;
-import io.github.leothawne.TheDoctorReborn.event.PlayerEvent;
+import io.github.leothawne.TheDoctorReborn.listener.AdminListener;
+import io.github.leothawne.TheDoctorReborn.listener.PlayerListener;
+import io.github.leothawne.TheDoctorReborn.module.ConfigurationModule;
+import io.github.leothawne.TheDoctorReborn.module.ConsoleModule;
+import io.github.leothawne.TheDoctorReborn.module.LanguageModule;
+import io.github.leothawne.TheDoctorReborn.module.MetricsModule;
+import io.github.leothawne.TheDoctorReborn.module.StorageModule;
 import io.github.leothawne.TheDoctorReborn.task.RecipeTask;
 import io.github.leothawne.TheDoctorReborn.task.RegenerationTask;
 import io.github.leothawne.TheDoctorReborn.task.VersionTask;
@@ -42,23 +49,33 @@ import io.github.leothawne.TheDoctorReborn.task.VersionTask;
  * @author leothawne
  *
  */
-public class TheDoctorReborn extends JavaPlugin {
-	private final ConsoleLoader myLogger = new ConsoleLoader(this);
-	private final void registerEvents(Listener...listeners) {
-		for(Listener listener : listeners) {
+public final class TheDoctorReborn extends JavaPlugin {
+	private static TheDoctorReborn instance;
+	private final ConsoleModule console = new ConsoleModule(this);
+	private final void registerEvents(final Listener...listeners) {
+		for(final Listener listener : listeners) {
 			Bukkit.getServer().getPluginManager().registerEvents(listener, this);
 		}
 	}
-	private static FileConfiguration configuration;
-	private static FileConfiguration language;
-	private static MetricsAPI metrics;
-	private static FileConfiguration regenerationData;
-	private static HashMap<UUID, Boolean> isRegenerating = new HashMap<UUID, Boolean>();
-	private static HashMap<UUID, Integer> regenerationTaskNumber = new HashMap<UUID, Integer>();
-	private static BukkitScheduler scheduler;
-	private static int versionTask;
-	private static int regenerationTask;
-	private static int recipeTask;
+	private FileConfiguration configuration = null;
+	private FileConfiguration language = null;
+	private MetricsAPI metrics = null;
+	private BukkitScheduler scheduler = null;
+	private FileConfiguration regenerationData = null;
+	private HashMap<UUID, Boolean> isRegenerating = new HashMap<UUID, Boolean>();
+	private HashMap<UUID, Integer> regenerationTaskNumber = new HashMap<UUID, Integer>();
+	private int versionTask = 0;
+	private int regenerationTask = 0;
+	private int recipeTask = 0;
+	/**
+	 * 
+	 * @deprecated Not for public use.
+	 * 
+	 */
+	@Override
+	public final void onLoad() {
+		this.console.info(this.getServer().getName() + " version " + this.getServer().getVersion() + " is loading " + this.getDescription().getName() + " v" + this.getDescription().getVersion() + "...");
+	}
 	/**
 	 * 
 	 * @deprecated Not for public use.
@@ -66,33 +83,51 @@ public class TheDoctorReborn extends JavaPlugin {
 	 */
 	@Override
 	public final void onEnable() {
-		myLogger.Hello();
-		myLogger.info("Loading...");
-		ConfigurationLoader.check(this, myLogger);
-		configuration = ConfigurationLoader.load(this, myLogger);
-		if(configuration.getBoolean("enable-plugin") == true) {
-			MetricsLoader.init(this, myLogger, metrics);
-			LanguageLoader.check(this, myLogger, configuration);
-			language = LanguageLoader.load(this, myLogger, configuration);
-			PlayerDataLoader.check(this, myLogger);
-			regenerationData = PlayerDataLoader.load(this, myLogger);
-			for(Player player : getServer().getOnlinePlayers()) {
-				PlayerDataLoader.checkPlayer(regenerationData, player);
-				isRegenerating.put(player.getUniqueId(), false);
+		this.console.Hello();
+		this.console.info("Loading...");
+		ConfigurationModule.preLoad(this, this.console);
+		if(ConfigurationModule.isItOutdated(this)) {
+			this.console.warning("Updating config.yml with a newer version...");
+			if(ConfigurationModule.deleteFile(this)) {
+				ConfigurationModule.preLoad(this, this.console);
+			} else {
+				this.console.severe("Could not delete the config.yml file. Do this manually and restart the server.");
+				this.getServer().getPluginManager().disablePlugin(this);
+				return;
 			}
-			getCommand("reborn").setExecutor(new RebornCommand(myLogger, language, regenerationData, isRegenerating));
-			getCommand("reborn").setTabCompleter(new RebornCommandTabCompleter());
-			getCommand("rebornadmin").setExecutor(new RebornAdminCommand(this, myLogger, language, regenerationData));
-			getCommand("rebornadmin").setTabCompleter(new RebornAdminCommandTabCompleter());
-			registerEvents(new AdminEvent(configuration), new PlayerEvent(this, myLogger, configuration, language, regenerationData, isRegenerating, regenerationTaskNumber));
-			scheduler = getServer().getScheduler();
-			versionTask = scheduler.scheduleAsyncRepeatingTask(this, new VersionTask(this, myLogger, Version.getVersionNumber(), Version.getPluginURL()), 0, 20 * 60 * 60);
-			regenerationTask = scheduler.scheduleSyncRepeatingTask(this, new RegenerationTask(this, regenerationData, isRegenerating), 0, 2);
-			recipeTask = scheduler.scheduleSyncRepeatingTask(this, new RecipeTask(this, language), 0, 20 * 1);
-		} else {
-			myLogger.severe("You choose to disable this plugin.");
-			getServer().getPluginManager().disablePlugin(this);
 		}
+		this.configuration = ConfigurationModule.load(this, this.console);
+		if(this.configuration.getBoolean("enable-plugin") == true) {
+			this.metrics = MetricsModule.init(this, this.console);
+			LanguageModule.preLoad(this, this.console, this.configuration);
+			if(LanguageModule.isItOutdated(this, this.configuration)) {
+				this.console.warning("Updating " + this.configuration.getString("language") + ".yml with a newer version...");
+				if(LanguageModule.deleteFile(this, this.configuration)) {
+					LanguageModule.preLoad(this, this.console, this.configuration);
+				} else {
+					this.console.severe("Could not delete the " + this.configuration.getString("language") + ".yml file. Do this manually and restart the server.");
+					this.getServer().getPluginManager().disablePlugin(this);
+					return;
+				}
+			}
+			this.language = LanguageModule.load(this, this.console, this.configuration);
+			StorageModule.preLoad(this, this.console);
+			this.regenerationData = StorageModule.load(this, this.console);
+			for(final Player player : this.getServer().getOnlinePlayers()) {
+				StorageModule.checkPlayer(this.regenerationData, player);
+				this.isRegenerating.put(player.getUniqueId(), false);
+			}
+			this.getCommand("reborn").setExecutor(new RebornCommand(this, this.language, this.regenerationData, this.isRegenerating));
+			this.getCommand("reborn").setTabCompleter(new RebornCommandTabCompleter());
+			this.getCommand("rebornadmin").setExecutor(new RebornAdminCommand(this, this.language, this.regenerationData));
+			this.getCommand("rebornadmin").setTabCompleter(new RebornAdminCommandTabCompleter(this));
+			this.scheduler = this.getServer().getScheduler();
+			this.versionTask = this.scheduler.scheduleAsyncRepeatingTask(this, new VersionTask(this, this.console), 0, 20 * 60 * 60);
+			this.regenerationTask = scheduler.scheduleSyncRepeatingTask(this, new RegenerationTask(this, this.regenerationData, this.isRegenerating), 0, 2);
+			this.recipeTask = scheduler.scheduleSyncRepeatingTask(this, new RecipeTask(this, this.language), 0, 20);
+			this.registerEvents(new AdminListener(this.configuration), new PlayerListener(this, this.console, this.configuration, this.language, this.regenerationData, this.isRegenerating, this.regenerationTaskNumber));
+			this.getServer().dispatchCommand(this.getServer().getConsoleSender(), "rebornadmin update");
+		} else this.getServer().getPluginManager().disablePlugin(this);
 	}
 	/**
 	 * 
@@ -101,16 +136,41 @@ public class TheDoctorReborn extends JavaPlugin {
 	 */
 	@Override
 	public final void onDisable() {
-		myLogger.info("Unloading...");
-		if(scheduler.isCurrentlyRunning(versionTask)) {
-			scheduler.cancelTask(versionTask);
+		this.console.info("Unloading...");
+		if(this.scheduler.isCurrentlyRunning(this.versionTask) || this.scheduler.isQueued(this.versionTask)) {
+			this.scheduler.cancelTask(this.versionTask);
+			this.console.info("Task #" + this.versionTask + " cancelled.");
 		}
-		if(scheduler.isCurrentlyRunning(regenerationTask)) {
-			scheduler.cancelTask(regenerationTask);
+		if(this.scheduler.isCurrentlyRunning(this.regenerationTask) || this.scheduler.isQueued(this.regenerationTask)) {
+			this.scheduler.cancelTask(this.regenerationTask);
+			this.console.info("Task #" + this.regenerationTask + " cancelled.");
 		}
-		if(scheduler.isCurrentlyRunning(recipeTask)) {
-			scheduler.cancelTask(recipeTask);
+		if(this.scheduler.isCurrentlyRunning(this.recipeTask) || this.scheduler.isQueued(this.recipeTask)) {
+			this.scheduler.cancelTask(this.recipeTask);
+			this.console.info("Task #" + this.recipeTask + " cancelled.");
 		}
-		PlayerDataLoader.save(this, myLogger, regenerationData);
+		if(this.regenerationData != null) StorageModule.saveData(this, this.console, this.regenerationData);
+	}
+	/**
+	 * 
+	 * Method used to cast the API class.
+	 * 
+	 * @return The API class.
+	 * 
+	 */
+	@SuppressWarnings("deprecation")
+	public final TheDoctorRebornAPI getAPI() {
+		return new TheDoctorRebornAPI(this.metrics);
+	}
+	/**
+	 * 
+	 * Method used to cast the main class.
+	 * 
+	 * @return The main class.
+	 * 
+	 */
+	public static final TheDoctorReborn getInstance() {
+		if(TheDoctorReborn.instance == null) TheDoctorReborn.instance = new TheDoctorReborn();
+		return TheDoctorReborn.instance;
 	}
 }

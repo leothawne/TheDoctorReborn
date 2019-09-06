@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 Murilo Amaral Nappi (murilonappi@gmail.com)
+ * Copyright (C) 2019 Murilo Amaral Nappi
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,16 +14,20 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package io.github.leothawne.TheDoctorReborn.api.utility;
+package io.github.leothawne.TheDoctorReborn.api;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 import org.bukkit.util.StringUtil;
 
-public class TabCompleterAPI {
-	public List<String> partial(String token, Collection<String> from) {
-        return StringUtil.copyPartialMatches(token, from, new ArrayList<>(from.size()));
+public final class TabCompleterAPI {
+	private TabCompleterAPI() {}
+	public static final ArrayList<String> partial(final String token, final Collection<String> from) {
+		final ArrayList<String> strings = new ArrayList<String>();
+		for(final Object object : StringUtil.copyPartialMatches(token, from, new ArrayList<>(from.size()))) {
+			strings.add(object.toString());
+		}
+        return strings;
     }
 }

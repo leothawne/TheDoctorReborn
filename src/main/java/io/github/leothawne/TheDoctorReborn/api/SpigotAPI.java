@@ -14,24 +14,16 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package io.github.leothawne.TheDoctorReborn.task;
+package io.github.leothawne.TheDoctorReborn.api;
 
-import org.bukkit.configuration.file.FileConfiguration;
-
-import io.github.leothawne.TheDoctorReborn.TheDoctorReborn;
-import io.github.leothawne.TheDoctorReborn.item.SymbioticNucleiItem;
-
-public final class RecipeTask implements Runnable {
-	private TheDoctorReborn plugin;
-	private FileConfiguration language;
-	public RecipeTask(final TheDoctorReborn plugin, final FileConfiguration language) {
-		this.plugin = plugin;
-		this.language = language;
-	}
-	@Override
-	public final void run() {
+public final class SpigotAPI {
+	private SpigotAPI() {}
+	public static final boolean isSpigot() {
 		try {
-			this.plugin.getServer().addRecipe(SymbioticNucleiItem.getRecipe(this.plugin, this.language));
-		} catch(IllegalStateException exception) {}
+			Class.forName("org.spigotmc.CustomTimingsHandler");
+			return true;
+		} catch (final ClassNotFoundException exception) {
+			return false;
+		}
 	}
 }

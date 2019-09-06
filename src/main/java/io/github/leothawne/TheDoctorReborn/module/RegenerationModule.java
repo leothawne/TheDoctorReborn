@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 Murilo Amaral Nappi (murilonappi@gmail.com)
+ * Copyright (C) 2019 Murilo Amaral Nappi
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package io.github.leothawne.TheDoctorReborn.api.utility;
+package io.github.leothawne.TheDoctorReborn.module;
 
 import java.util.HashMap;
 import java.util.UUID;
@@ -27,30 +27,27 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
-import io.github.leothawne.TheDoctorReborn.PlayerDataLoader;
 import io.github.leothawne.TheDoctorReborn.TheDoctorReborn;
-import io.github.leothawne.TheDoctorReborn.type.DataSectionType;
+import io.github.leothawne.TheDoctorReborn.type.DataType;
 
-public class RegenerationAPI {
-	public static final void playerRegenerate(TheDoctorReborn plugin, FileConfiguration language, FileConfiguration regenerationData, Player player, HashMap<UUID, Boolean> isRegenerating, HashMap<UUID, Integer> regenerationTaskNumber, boolean symbioticNuclei) {
+public final class RegenerationModule {
+	private RegenerationModule() {}
+	public static final void beginRegeneration(final TheDoctorReborn plugin, final FileConfiguration language, final FileConfiguration regenerationData, final Player player, final HashMap<UUID, Boolean> isRegenerating, final HashMap<UUID, Integer> regenerationTaskNumber, final boolean symbioticNuclei) {
 		player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20 * 14, 1));
 		player.sendTitle(ChatColor.BLUE + language.getString("player-regenerating"), "", 20 * 1, 20 * 11, 20 * 1);
 		isRegenerating.put(player.getUniqueId(), true);
-		int newNumber;
+		int number = 0;
 		if(symbioticNuclei) {
-			newNumber = (int) PlayerDataLoader.getPlayer(regenerationData, player, DataSectionType.REGENERATION_CYCLE) + 1;
-		} else {
-			newNumber = (int) PlayerDataLoader.getPlayer(regenerationData, player, DataSectionType.REGENERATION_NUMBER) + 1;
-		}
-		BukkitTask task = new BukkitRunnable() {
+			number = (int) StorageModule.getPlayer(regenerationData, player, DataType.REGENERATION_CYCLE) + 1;
+		} else number = (int) StorageModule.getPlayer(regenerationData, player, DataType.REGENERATION_NUMBER) + 1;
+		final int newNumber = number;
+		final BukkitTask task = new BukkitRunnable() {
 			@Override
 			public final void run() {
 				if(symbioticNuclei) {
-					PlayerDataLoader.setPlayer(regenerationData, player, DataSectionType.REGENERATION_CYCLE, newNumber);
-					PlayerDataLoader.setPlayer(regenerationData, player, DataSectionType.REGENERATION_NUMBER, 0);
-				} else {
-					PlayerDataLoader.setPlayer(regenerationData, player, DataSectionType.REGENERATION_NUMBER, newNumber);
-				}
+					StorageModule.setPlayer(regenerationData, player, DataType.REGENERATION_CYCLE, newNumber);
+					StorageModule.setPlayer(regenerationData, player, DataType.REGENERATION_NUMBER, 0);
+				} else StorageModule.setPlayer(regenerationData, player, DataType.REGENERATION_NUMBER, newNumber);
 				isRegenerating.put(player.getUniqueId(), false);
 				player.addPotionEffect(new PotionEffect(PotionEffectType.HEALTH_BOOST, 20 * 120, 14));
 				player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 20 * 120, 14));

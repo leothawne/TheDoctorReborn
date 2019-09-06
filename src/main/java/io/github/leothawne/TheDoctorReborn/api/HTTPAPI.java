@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package io.github.leothawne.TheDoctorReborn.api.utility;
+package io.github.leothawne.TheDoctorReborn.api;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -22,20 +22,21 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.Charset;
 
-public class HTTP {
-	public static final String getData(String url) {
+public final class HTTPAPI {
+	private HTTPAPI() {}
+	public static final String getData(final String url) {
 		try {
-			URLConnection connection = new URL(url).openConnection();
+			final URLConnection connection = new URL(url).openConnection();
 			connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.119 Safari/537.36");
 			connection.connect();
-			BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), Charset.forName("UTF-8")));
-			StringBuilder builder = new StringBuilder();
+			final BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), Charset.forName("UTF-8")));
+			final StringBuilder builder = new StringBuilder();
 			String string;
 			while((string = reader.readLine()) != null) {
 				builder.append(string);
 			}
 			return builder.toString();
-		} catch(Exception exception) {
+		} catch(final Exception exception) {
 			return null;
 		}
 	}

@@ -16,32 +16,32 @@
  */
 package io.github.leothawne.TheDoctorReborn.task;
 
-import io.github.leothawne.TheDoctorReborn.ConsoleLoader;
 import io.github.leothawne.TheDoctorReborn.TheDoctorReborn;
-import io.github.leothawne.TheDoctorReborn.api.utility.HTTP;
+import io.github.leothawne.TheDoctorReborn.api.HTTPAPI;
+import io.github.leothawne.TheDoctorReborn.module.ConsoleModule;
+import io.github.leothawne.TheDoctorReborn.module.DataModule;
+import io.github.leothawne.TheDoctorReborn.type.ProjectPageType;
 
-public class VersionTask implements Runnable {
-	private static TheDoctorReborn plugin;
-	private static ConsoleLoader myLogger;
-	private static String pluginVersion;
-	private static String pluginURL;
-	public VersionTask(TheDoctorReborn plugin, ConsoleLoader myLogger, String pluginVersion, String pluginURL) {
-		VersionTask.plugin = plugin;
-		VersionTask.myLogger = myLogger;
-		VersionTask.pluginVersion = pluginVersion;
-		VersionTask.pluginURL = pluginURL;
+public final class VersionTask implements Runnable {
+	private TheDoctorReborn plugin;
+	private ConsoleModule console;
+	public VersionTask(final TheDoctorReborn plugin, final ConsoleModule console) {
+		this.plugin = plugin;
+		this.console = console;
 	}
 	@Override
 	public final void run() {
-		String response = HTTP.getData(pluginURL);
+		final String version = this.plugin.getDescription().getVersion();
+		final String url = DataModule.getPluginURL(version);
+		final String response = HTTPAPI.getData(url);
 		if(response != null) {
 			if(response.equalsIgnoreCase("disabled")) {
-				myLogger.severe("Hey you, stop right there! The version " + pluginVersion + " is not allowed anymore!");
-				myLogger.severe("Apologies, but this plugin will now be disabled! Download a newer version to play: https://dev.bukkit.org/projects/lt-item-mail");
-				plugin.getServer().getPluginManager().disablePlugin(plugin);
+				this.console.warning("The version " + version + " is no longer allowed to be played.");
+				this.console.warning("Download a newer version at " + DataModule.getProjectPage(ProjectPageType.SPIGOT_MC));
+				this.plugin.getServer().getPluginManager().disablePlugin(this.plugin);
 			}
 		} else {
-			myLogger.warning("Unable to locate: " + pluginURL);
+			this.console.severe("Unable to locate: " + url);
 		}
 	}
 }

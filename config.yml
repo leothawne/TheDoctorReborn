@@ -12,5 +12,9 @@ update:
 #Should a player see its own regeneration status after join the server? Default: true.
 status-after-login: true
 
+#If for some reason a timelord died, should it respawn instantly? Default: true.
+#Note that this will only work if your server is Spigot.
+respawn-on-death: true
+
 #Do not change this under any circumstances!
-config-version: 4
+config-version: 5

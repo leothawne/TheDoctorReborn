@@ -14,24 +14,38 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package io.github.leothawne.TheDoctorReborn.task;
-
-import org.bukkit.configuration.file.FileConfiguration;
+package io.github.leothawne.TheDoctorReborn.api;
 
 import io.github.leothawne.TheDoctorReborn.TheDoctorReborn;
-import io.github.leothawne.TheDoctorReborn.item.SymbioticNucleiItem;
 
-public final class RecipeTask implements Runnable {
-	private TheDoctorReborn plugin;
-	private FileConfiguration language;
-	public RecipeTask(final TheDoctorReborn plugin, final FileConfiguration language) {
-		this.plugin = plugin;
-		this.language = language;
+/**
+ * 
+ * The API class.
+ * 
+ * @author leothawne
+ * 
+ */
+public final class TheDoctorRebornAPI {
+	private MetricsAPI metrics;
+	/**
+	 * 
+	 * @deprecated There is no need to manually create
+	 * an object with this constructor when
+	 * you can easily use {@link TheDoctorReborn#getAPI()}.
+	 * 
+	 */
+	public TheDoctorRebornAPI(final MetricsAPI metrics) {
+		this.metrics = metrics;
 	}
-	@Override
-	public final void run() {
-		try {
-			this.plugin.getServer().addRecipe(SymbioticNucleiItem.getRecipe(this.plugin, this.language));
-		} catch(IllegalStateException exception) {}
+	/**
+	 * 
+	 * Returns a boolean type value that can be used to determine
+	 * if the plugin is currently using bStats.
+	 * 
+	 * @return A boolean type value.
+	 * 
+	 */
+	public final boolean isMetricsEnabled() {
+		return this.metrics.isEnabled();
 	}
 }
