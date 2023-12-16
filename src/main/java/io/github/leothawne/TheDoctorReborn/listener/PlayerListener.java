@@ -17,7 +17,6 @@
 package io.github.leothawne.TheDoctorReborn.listener;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.UUID;
 
 import org.bukkit.ChatColor;
@@ -44,9 +43,9 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.ItemStack;
 
 import io.github.leothawne.TheDoctorReborn.TheDoctorReborn;
-import io.github.leothawne.TheDoctorReborn.api.SpigotAPI;
 import io.github.leothawne.TheDoctorReborn.item.SymbioticNucleiItem;
 import io.github.leothawne.TheDoctorReborn.module.ConsoleModule;
+import io.github.leothawne.TheDoctorReborn.module.NBTModule;
 import io.github.leothawne.TheDoctorReborn.module.RegenerationModule;
 import io.github.leothawne.TheDoctorReborn.module.StorageModule;
 import io.github.leothawne.TheDoctorReborn.type.DataType;
@@ -89,8 +88,8 @@ public final class PlayerListener implements Listener {
 	public final void onPlayerGetDamage(final EntityDamageEvent event) {
 		if(event.getEntity() instanceof Player) {
 			final Player player = (Player) event.getEntity();
-			if(player.hasPermission("TheDoctorReborn.use")) if((int) StorageModule.getPlayer(this.regenerationData, player, DataType.REGENERATION_NUMBER) < 12) if(!(boolean) StorageModule.getPlayer(this.regenerationData, player, DataType.REGENERATION_LOCKED)) if(this.isRegenerating.get(player.getUniqueId()).booleanValue()) {
-				if(event.getFinalDamage() > player.getHealth() && !event.getCause().equals(DamageCause.SUICIDE)) {
+			if(player.hasPermission("TheDoctorReborn.use")) if((int) StorageModule.getPlayer(this.regenerationData, player, DataType.REGENERATION_NUMBER) < 12) if(!(boolean) StorageModule.getPlayer(this.regenerationData, player, DataType.REGENERATION_LOCKED)) if(!this.isRegenerating.get(player.getUniqueId()).booleanValue()) {
+				if(event.getFinalDamage() > player.getHealth()) {
 					event.setCancelled(true);
 					player.setHealth(20.0);
 					player.setFoodLevel(20);
@@ -98,11 +97,8 @@ public final class PlayerListener implements Listener {
 						player.teleport(player.getLocation().getWorld().getSpawnLocation());
 					} else RegenerationModule.beginRegeneration(this.plugin, this.language, this.regenerationData, player, this.isRegenerating, this.regenerationTaskNumber, false);
 				}
-			} else {
-				event.setCancelled(true);
-				player.setHealth(20.0);
-				player.setFoodLevel(20);
 			}
+			if(this.isRegenerating.get(player.getUniqueId()).booleanValue()) event.setCancelled(true);
 		}
 	}
 	@EventHandler(priority = EventPriority.HIGHEST)
@@ -114,11 +110,11 @@ public final class PlayerListener implements Listener {
 			for(final Player players : this.plugin.getServer().getOnlinePlayers()) players.sendMessage(player.getName() + " " + this.language.getString("regeneration-ended"));
 		} else {
 			this.isRegenerating.put(player.getUniqueId(), false);
-			if(this.plugin.getServer().getScheduler().isCurrentlyRunning(this.regenerationTaskNumber.get(player.getUniqueId()))) this.plugin.getServer().getScheduler().cancelTask(this.regenerationTaskNumber.get(player.getUniqueId()));
+			if(this.plugin.getServer().getScheduler().isCurrentlyRunning(this.regenerationTaskNumber.get(player.getUniqueId())) || this.plugin.getServer().getScheduler().isQueued(this.regenerationTaskNumber.get(player.getUniqueId()))) this.plugin.getServer().getScheduler().cancelTask(this.regenerationTaskNumber.get(player.getUniqueId()));
 			for(final Player players : this.plugin.getServer().getOnlinePlayers()) players.sendMessage(player.getName() + " " + this.language.getString("died-regenerating"));
 			this.console.warning("Timelord " + player.getName() + " died?");
 		}
-		if(this.configuration.getBoolean("respawn-on-death")) if(SpigotAPI.isSpigot()) player.spigot().respawn();
+		//if(this.configuration.getBoolean("respawn-on-death")) if(SpigotAPI.isSpigot()) player.spigot().respawn();
 	}
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public final void onPlayerMove(final PlayerMoveEvent event) {
@@ -137,29 +133,17 @@ public final class PlayerListener implements Listener {
 			event.setCancelled(true);
 		} else {
 			final ItemStack item = event.getItem();
-			if(item.getType().equals(SymbioticNucleiItem.getMaterial()) && item.hasItemMeta() && item.getItemMeta().getDisplayName().equals(SymbioticNucleiItem.getName())) {
-				final List<String> lore1 = item.getItemMeta().getLore();
-				final List<String> lore2 = SymbioticNucleiItem.getLore(this.language);
-				if(lore1.size() == 2 && lore1.get(1).equals(lore2.get(1))) if(player.hasPermission("TheDoctorReborn.use")) {
-					if(!(boolean) StorageModule.getPlayer(this.regenerationData, player, DataType.REGENERATION_LOCKED)) {
-						if((int) StorageModule.getPlayer(this.regenerationData, player, DataType.REGENERATION_NUMBER) == 12) {
-							if(!this.isRegenerating.get(player.getUniqueId()).booleanValue()) {
-								RegenerationModule.beginRegeneration(this.plugin, this.language, this.regenerationData, player, this.isRegenerating, this.regenerationTaskNumber, true);
-							} else {
-								event.setCancelled(true);
-								player.sendMessage(ChatColor.AQUA + "[" + this.plugin.getDescription().getName() + "] " + ChatColor.YELLOW + this.language.getString("symbiotic-nuclei-error"));
-							}
+			if(item != null && item.getItemMeta() != null) if(NBTModule.isTheDoctorRebornItem(new SymbioticNucleiItem(), item)) {
+				if(player.hasPermission("TheDoctorReborn.use")) {
+					if(!(boolean) StorageModule.getPlayer(this.regenerationData, player, DataType.REGENERATION_LOCKED) && (int) StorageModule.getPlayer(this.regenerationData, player, DataType.REGENERATION_NUMBER) == 12) {
+						if(!this.isRegenerating.get(player.getUniqueId()).booleanValue()) {
+							RegenerationModule.beginRegeneration(this.plugin, this.language, this.regenerationData, player, this.isRegenerating, this.regenerationTaskNumber, true);
 						} else {
 							event.setCancelled(true);
 							player.sendMessage(ChatColor.AQUA + "[" + this.plugin.getDescription().getName() + "] " + ChatColor.YELLOW + this.language.getString("symbiotic-nuclei-error"));
 						}
-					} else {
-						event.setCancelled(true);
-						player.sendMessage(ChatColor.AQUA + "[" + this.plugin.getDescription().getName() + "] " + ChatColor.YELLOW + this.language.getString("symbiotic-nuclei-error"));
-					}
-				} else {
-					player.sendMessage(ChatColor.AQUA + "[" + this.plugin.getDescription().getName() + "] " + ChatColor.YELLOW + this.language.getString("no-permission"));
-				}
+					} else player.sendMessage(ChatColor.AQUA + "[" + this.plugin.getDescription().getName() + "] " + ChatColor.YELLOW + this.language.getString("symbiotic-nuclei-no-effect"));
+				} else player.sendMessage(ChatColor.AQUA + "[" + this.plugin.getDescription().getName() + "] " + ChatColor.YELLOW + this.language.getString("no-permission"));
 			}
 		}
 	}

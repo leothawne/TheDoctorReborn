@@ -42,7 +42,7 @@ public final class LanguageModule {
 	}
 	public static final FileConfiguration load(final TheDoctorReborn plugin, final ConsoleModule console, final FileConfiguration configuration) {
 		final File languageFile = new File(plugin.getDataFolder(), configuration.getString("language") + ".yml");
-		if(languageFile.exists()) {
+		if(languageFile.exists() && languageFile.isFile()) {
 			final FileConfiguration languageConfig = new YamlConfiguration();
 			try {
 				console.info("Loading " + configuration.getString("language") + ".yml...");
@@ -59,7 +59,7 @@ public final class LanguageModule {
 	}
 	public static final boolean isItOutdated(final TheDoctorReborn plugin, final FileConfiguration configuration) {
 		final File languageFile = new File(plugin.getDataFolder(), configuration.getString("language") + ".yml");
-		if(languageFile.exists()) {
+		if(languageFile.exists() && languageFile.isFile()) {
 			final FileConfiguration languageConfig = new YamlConfiguration();
 			try {
 				languageConfig.load(languageFile);
@@ -83,7 +83,7 @@ public final class LanguageModule {
 	}
 	public static final boolean deleteFile(final TheDoctorReborn plugin, final FileConfiguration configuration) {
 		final File languageFile = new File(plugin.getDataFolder(), configuration.getString("language") + ".yml");
-		if(languageFile.exists()) return languageFile.delete();
+		if(languageFile.exists() && languageFile.isFile()) return languageFile.delete();
 		return false;
 	}
 }

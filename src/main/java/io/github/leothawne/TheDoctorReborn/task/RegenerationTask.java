@@ -39,13 +39,10 @@ public final class RegenerationTask implements Runnable {
 	}
 	@Override
 	public final void run() {
-		for(final Player player : this.plugin.getServer().getOnlinePlayers()) {
-			if(player.hasPermission("TheDoctorReborn.use")) if((boolean) StorageModule.getPlayer(this.regenerationData, player, DataType.REGENERATION_LOCKED) == false) if(this.isRegenerating.get(player.getUniqueId()).booleanValue() == true) {
-				this.plugin.getServer().getWorld(player.getLocation().getWorld().getUID()).playEffect(player.getLocation(), Effect.MOBSPAWNER_FLAMES, 100);
-				this.plugin.getServer().getWorld(player.getLocation().getWorld().getUID()).playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1F, 1F);
-				this.plugin.getServer().getWorld(player.getLocation().getWorld().getUID()).playSound(player.getLocation(), Sound.BLOCK_GLASS_BREAK, 1F, 1F);
-				this.plugin.getServer().getWorld(player.getLocation().getWorld().getUID()).playSound(player.getLocation(), Sound.ENTITY_GENERIC_BURN, 1F, 1F);
-			}
+		for(final Player player : this.plugin.getServer().getOnlinePlayers()) if(player.hasPermission("TheDoctorReborn.use")) if((boolean) StorageModule.getPlayer(this.regenerationData, player, DataType.REGENERATION_LOCKED) == false) if(this.isRegenerating.get(player.getUniqueId()).booleanValue() == true) {
+			this.plugin.getServer().getWorld(player.getLocation().getWorld().getUID()).playEffect(player.getLocation(), Effect.MOBSPAWNER_FLAMES, 0);
+			this.plugin.getServer().getWorld(player.getLocation().getWorld().getUID()).playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 2, 1);
+			this.plugin.getServer().getWorld(player.getLocation().getWorld().getUID()).playSound(player.getLocation(), Sound.ENTITY_GENERIC_BURN, 2, 2);
 		}
 	}
 }

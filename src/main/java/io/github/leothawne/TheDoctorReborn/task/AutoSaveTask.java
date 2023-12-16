@@ -16,30 +16,23 @@
  */
 package io.github.leothawne.TheDoctorReborn.task;
 
-import io.github.leothawne.TheDoctorReborn.TheDoctorReborn;
-import io.github.leothawne.TheDoctorReborn.api.HTTPAPI;
-import io.github.leothawne.TheDoctorReborn.module.ConsoleModule;
-import io.github.leothawne.TheDoctorReborn.module.DataModule;
-import io.github.leothawne.TheDoctorReborn.type.ProjectPageType;
+import org.bukkit.configuration.file.FileConfiguration;
 
-public final class VersionTask implements Runnable {
+import io.github.leothawne.TheDoctorReborn.TheDoctorReborn;
+import io.github.leothawne.TheDoctorReborn.module.ConsoleModule;
+import io.github.leothawne.TheDoctorReborn.module.StorageModule;
+
+public final class AutoSaveTask implements Runnable {
 	private TheDoctorReborn plugin;
 	private ConsoleModule console;
-	public VersionTask(final TheDoctorReborn plugin, final ConsoleModule console) {
+	private FileConfiguration regenerationData;
+	public AutoSaveTask(final TheDoctorReborn plugin, final ConsoleModule console, final FileConfiguration regenerationData) {
 		this.plugin = plugin;
 		this.console = console;
+		this.regenerationData = regenerationData;
 	}
 	@Override
 	public final void run() {
-		final String version = this.plugin.getDescription().getVersion();
-		final String url = DataModule.getPluginURL(version);
-		final String response = HTTPAPI.getData(url);
-		if(response != null) {
-			if(response.equalsIgnoreCase("disabled")) {
-				this.console.warning("The version " + version + " is no longer allowed to be played.");
-				this.console.warning("Download a newer version at " + DataModule.getProjectPage(ProjectPageType.SPIGOT_MC));
-				this.plugin.getServer().getPluginManager().disablePlugin(this.plugin);
-			}
-		} else this.console.severe("Unable to locate: " + url);
+		StorageModule.saveData(this.plugin, this.console, this.regenerationData, false);
 	}
 }

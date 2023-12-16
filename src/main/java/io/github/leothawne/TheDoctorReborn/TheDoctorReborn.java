@@ -16,7 +16,13 @@
  */
 package io.github.leothawne.TheDoctorReborn;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
@@ -39,6 +45,7 @@ import io.github.leothawne.TheDoctorReborn.module.ConsoleModule;
 import io.github.leothawne.TheDoctorReborn.module.LanguageModule;
 import io.github.leothawne.TheDoctorReborn.module.MetricsModule;
 import io.github.leothawne.TheDoctorReborn.module.StorageModule;
+import io.github.leothawne.TheDoctorReborn.task.AutoSaveTask;
 import io.github.leothawne.TheDoctorReborn.task.RecipeTask;
 import io.github.leothawne.TheDoctorReborn.task.RegenerationTask;
 import io.github.leothawne.TheDoctorReborn.task.VersionTask;
@@ -67,6 +74,7 @@ public final class TheDoctorReborn extends JavaPlugin {
 	private int versionTask = 0;
 	private int regenerationTask = 0;
 	private int recipeTask = 0;
+	private int autoSaveTask = 0;
 	/**
 	 * 
 	 * @deprecated Not for public use.
@@ -74,6 +82,7 @@ public final class TheDoctorReborn extends JavaPlugin {
 	 */
 	@Override
 	public final void onLoad() {
+		instance = this;
 		this.console.info(this.getServer().getName() + " version " + this.getServer().getVersion() + " is loading " + this.getDescription().getName() + " v" + this.getDescription().getVersion() + "...");
 	}
 	/**
@@ -86,12 +95,13 @@ public final class TheDoctorReborn extends JavaPlugin {
 		this.console.Hello();
 		this.console.info("Loading...");
 		ConfigurationModule.preLoad(this, this.console);
-		if(ConfigurationModule.isItOutdated(this)) {
+		final File devKey = new File(this.getDataFolder(), "devMode.key");
+		if(!(devKey.exists() && devKey.isFile())) if(ConfigurationModule.isItOutdated(this)) {
 			this.console.warning("Updating config.yml with a newer version...");
-			if(ConfigurationModule.deleteFile(this)) {
+			if(ConfigurationModule.makeOldFile(this)) {
 				ConfigurationModule.preLoad(this, this.console);
 			} else {
-				this.console.severe("Could not delete the config.yml file. Do this manually and restart the server.");
+				this.console.severe("Could not rename the old config.yml file. Do this manually and restart the server.");
 				this.getServer().getPluginManager().disablePlugin(this);
 				return;
 			}
@@ -100,7 +110,7 @@ public final class TheDoctorReborn extends JavaPlugin {
 		if(this.configuration.getBoolean("enable-plugin") == true) {
 			this.metrics = MetricsModule.init(this, this.console);
 			LanguageModule.preLoad(this, this.console, this.configuration);
-			if(LanguageModule.isItOutdated(this, this.configuration)) {
+			if(!(devKey.exists() && devKey.isFile())) if(LanguageModule.isItOutdated(this, this.configuration)) {
 				this.console.warning("Updating " + this.configuration.getString("language") + ".yml with a newer version...");
 				if(LanguageModule.deleteFile(this, this.configuration)) {
 					LanguageModule.preLoad(this, this.console, this.configuration);
@@ -123,10 +133,28 @@ public final class TheDoctorReborn extends JavaPlugin {
 			this.getCommand("rebornadmin").setTabCompleter(new RebornAdminCommandTabCompleter(this));
 			this.scheduler = this.getServer().getScheduler();
 			this.versionTask = this.scheduler.scheduleAsyncRepeatingTask(this, new VersionTask(this, this.console), 0, 20 * 60 * 60);
-			this.regenerationTask = scheduler.scheduleSyncRepeatingTask(this, new RegenerationTask(this, this.regenerationData, this.isRegenerating), 0, 2);
-			this.recipeTask = scheduler.scheduleSyncRepeatingTask(this, new RecipeTask(this, this.language), 0, 20);
+			this.regenerationTask = this.scheduler.scheduleSyncRepeatingTask(this, new RegenerationTask(this, this.regenerationData, this.isRegenerating), 0, 2);
+			this.recipeTask = this.scheduler.scheduleSyncRepeatingTask(this, new RecipeTask(this, this.language), 0, 20);
+			this.autoSaveTask = this.scheduler.scheduleSyncRepeatingTask(this, new AutoSaveTask(this, this.console, this.regenerationData), 20 * 60 * 5, 20 * 60 * 5);
 			this.registerEvents(new AdminListener(this.configuration), new PlayerListener(this, this.console, this.configuration, this.language, this.regenerationData, this.isRegenerating, this.regenerationTaskNumber));
 			this.getServer().dispatchCommand(this.getServer().getConsoleSender(), "rebornadmin update");
+			if(devKey.exists() && devKey.isFile()) {
+				this.console.development("Development key found!");
+				try {
+					final BufferedReader reader = Files.newBufferedReader(Paths.get(devKey.toURI()));
+					final LinkedList<String> commandList = new LinkedList<String>();
+					String command;
+					while((command = reader.readLine()) != null) commandList.add(command);
+					this.scheduler.runTask(this, new Runnable() {
+						@Override
+						public final void run() {
+							for(final String cmd : commandList) TheDoctorReborn.this.getServer().dispatchCommand(TheDoctorReborn.this.getServer().getConsoleSender(), cmd);
+						}
+					});
+				} catch (final IOException exception) {
+					exception.printStackTrace();
+				}
+			}
 		} else this.getServer().getPluginManager().disablePlugin(this);
 	}
 	/**
@@ -149,7 +177,11 @@ public final class TheDoctorReborn extends JavaPlugin {
 			this.scheduler.cancelTask(this.recipeTask);
 			this.console.info("Task #" + this.recipeTask + " cancelled.");
 		}
-		if(this.regenerationData != null) StorageModule.saveData(this, this.console, this.regenerationData);
+		if(this.scheduler.isCurrentlyRunning(this.autoSaveTask) || this.scheduler.isQueued(this.autoSaveTask)) {
+			this.scheduler.cancelTask(this.autoSaveTask);
+			this.console.info("Task #" + this.autoSaveTask + " cancelled.");
+		}
+		if(this.regenerationData != null) StorageModule.saveData(this, this.console, this.regenerationData, true);
 	}
 	/**
 	 * 
@@ -170,7 +202,6 @@ public final class TheDoctorReborn extends JavaPlugin {
 	 * 
 	 */
 	public static final TheDoctorReborn getInstance() {
-		if(TheDoctorReborn.instance == null) TheDoctorReborn.instance = new TheDoctorReborn();
-		return TheDoctorReborn.instance;
+		return instance;
 	}
 }

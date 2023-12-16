@@ -20,7 +20,8 @@ player-health-level: "Health level:"
 player-food-level: "Food level:"
 player-cycle: "Regeneration cycle:"
 symbiotic-nuclei-item: "Once you drink, it will restart your regeneration cycle."
-symbiotic-nuclei-error: "You can not drink this right now."
+symbiotic-nuclei-error: "You have no strength to bring the bottle to your mouth. Your regenerative energy keeps you from doing anything."
+symbiotic-nuclei-no-effect: "The strange drink has no taste and no smell. Nothing out of the ordinary happens."
 
 #Do not change this under any circumstances!
-language-version: 1
+language-version: 2

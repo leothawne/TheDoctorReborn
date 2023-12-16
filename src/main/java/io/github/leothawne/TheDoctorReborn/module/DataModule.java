@@ -24,9 +24,9 @@ import io.github.leothawne.TheDoctorReborn.type.VersionType;
 public final class DataModule {
 	private DataModule() {}
 	private static final String PROJECT_PAGES = "SPIGOT_MC:https://www.spigotmc.org/resources/60429";
-	private static final String VERSIONS = "CONFIG_YML:5,ENGLISH_YML:1,PORTUGUESE_YML:1,MINECRAFT:1.14,JAVA:7";
-	private static final String Plugin_Date = "12/06/2019 15:34 (BRT)";
-	private static final String Bukkit_API = "spigot-api-1.14-R0.1-SNAPSHOT";
+	private static final String VERSIONS = "CONFIG_YML:5,ENGLISH_YML:2,PORTUGUESE_YML:2,MINECRAFT:1.20.4,JAVA:18";
+	private static final String Plugin_Date = "16/12/2023 16:21 (BRT)";
+	private static final String Bukkit_API = "spigot-api-1.20.4-R0.1-SNAPSHOT";
 	private static final String Update_URL = "https://leothawne.github.io/TheDoctorReborn/api/$version.html";
 	private static final String Plugin_URL = "https://leothawne.github.io/TheDoctorReborn/api/$version/plugin.html";
 	public static final String getProjectPage(final ProjectPageType type) {

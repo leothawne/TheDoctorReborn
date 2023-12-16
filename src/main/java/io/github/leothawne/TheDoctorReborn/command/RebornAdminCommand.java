@@ -99,6 +99,8 @@ public final class RebornAdminCommand implements CommandExecutor {
 						sender.sendMessage("");
 					} else sender.sendMessage(ChatColor.AQUA + "[" + this.plugin.getDescription().getName() + "] " + ChatColor.YELLOW + language.getString("player-not-found"));
 				} else sender.sendMessage(ChatColor.AQUA + "[" + this.plugin.getDescription().getName() + "] " + ChatColor.YELLOW + language.getString("player-tma"));
+			} else if(args[0].equals("devResetServerRecipeList")) {
+				this.plugin.getServer().resetRecipes();
 			} else sender.sendMessage(ChatColor.AQUA + "[" + this.plugin.getDescription().getName() + "] " + ChatColor.YELLOW + "Invalid subcommand! Type " + ChatColor.GREEN + "/rebornadmin " + ChatColor.YELLOW + "for help.");
 		} else sender.sendMessage(ChatColor.AQUA + "[" + this.plugin.getDescription().getName() + "] " + ChatColor.YELLOW + language.getString("no-permission"));
 		return true;

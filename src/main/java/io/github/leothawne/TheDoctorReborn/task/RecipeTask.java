@@ -31,7 +31,7 @@ public final class RecipeTask implements Runnable {
 	@Override
 	public final void run() {
 		try {
-			this.plugin.getServer().addRecipe(SymbioticNucleiItem.getRecipe(this.plugin, this.language));
+			this.plugin.getServer().addRecipe(new SymbioticNucleiItem().getRecipe(this.plugin, this.language));
 		} catch(IllegalStateException exception) {}
 	}
 }

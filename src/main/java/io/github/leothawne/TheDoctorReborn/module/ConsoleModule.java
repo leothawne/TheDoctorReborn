@@ -24,29 +24,30 @@ import io.github.leothawne.TheDoctorReborn.type.VersionType;
 
 public final class ConsoleModule {
 	private TheDoctorReborn plugin;
-	private String prefix = null;
 	public ConsoleModule(final TheDoctorReborn plugin) {
 		this.plugin = plugin;
-		this.prefix = ChatColor.WHITE + "[" + this.plugin.getDescription().getName() + "]";
 	}
 	private final ConsoleCommandSender getConsoleSender() {
 		return this.plugin.getServer().getConsoleSender();
 	}
 	public final void Hello() {
-		getConsoleSender().sendMessage(ChatColor.AQUA + " _______ _____  _____  ");
-		getConsoleSender().sendMessage(ChatColor.AQUA + "|__   __|  __ \\|  __ \\ ");
-		getConsoleSender().sendMessage(ChatColor.AQUA + "   | |  | |  | | |__) |" + ChatColor.WHITE + "  Plugin version: " + this.plugin.getDescription().getVersion() + " (API version: " + DataModule.getBukkitAPI() + ")");
-		getConsoleSender().sendMessage(ChatColor.AQUA + "   | |  | |  | |  _  / " + ChatColor.WHITE + "  Java required: " + DataModule.getVersion(VersionType.JAVA));
-		getConsoleSender().sendMessage(ChatColor.AQUA + "   | |  | |__| | | \\ \\ " + ChatColor.WHITE + "  Released on: " + DataModule.getVersionDate());
-		getConsoleSender().sendMessage(ChatColor.AQUA + "   |_|  |_____/|_|  \\_\\");
+		this.getConsoleSender().sendMessage(ChatColor.AQUA + " _______ _____  _____  ");
+		this.getConsoleSender().sendMessage(ChatColor.AQUA + "|__   __|  __ \\|  __ \\ ");
+		this.getConsoleSender().sendMessage(ChatColor.AQUA + "   | |  | |  | | |__) |" + ChatColor.WHITE + "  Plugin version: " + this.plugin.getDescription().getVersion() + " (API version: " + DataModule.getBukkitAPI() + ")");
+		this.getConsoleSender().sendMessage(ChatColor.AQUA + "   | |  | |  | |  _  / " + ChatColor.WHITE + "  Java required: " + DataModule.getVersion(VersionType.JAVA));
+		this.getConsoleSender().sendMessage(ChatColor.AQUA + "   | |  | |__| | | \\ \\ " + ChatColor.WHITE + "  Released on: " + DataModule.getVersionDate());
+		this.getConsoleSender().sendMessage(ChatColor.AQUA + "   |_|  |_____/|_|  \\_\\");
 	}
 	public final void info(final String message) {
-		getConsoleSender().sendMessage(this.prefix + " " + ChatColor.GREEN + message);
+		this.getConsoleSender().sendMessage("[" + this.plugin.getDescription().getName() + "] " + ChatColor.GREEN + message);
 	}
 	public final void warning(final String message) {
-		getConsoleSender().sendMessage(this.prefix + " " + ChatColor.YELLOW + message);
+		this.getConsoleSender().sendMessage("[" + this.plugin.getDescription().getName() + "] " + ChatColor.YELLOW + message);
 	}
 	public final void severe(final String message) {
-		getConsoleSender().sendMessage(this.prefix + " " + ChatColor.RED + message);
+		this.getConsoleSender().sendMessage("[" + this.plugin.getDescription().getName() + "] " + ChatColor.RED + message);
+	}
+	public final void development(final String message) {
+		this.getConsoleSender().sendMessage("[" + this.plugin.getDescription().getName() + " " + ChatColor.DARK_PURPLE + "DEV" + ChatColor.RESET + "] " + ChatColor.LIGHT_PURPLE + message);
 	}
 }

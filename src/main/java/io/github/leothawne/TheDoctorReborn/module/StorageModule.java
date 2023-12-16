@@ -39,7 +39,7 @@ public final class StorageModule {
 	}
 	public static final FileConfiguration load(final TheDoctorReborn plugin, final ConsoleModule console) {
 		final File storageFile = new File(plugin.getDataFolder(), "players.yml");
-		if(storageFile.exists()) {
+		if(storageFile.exists() && storageFile.isFile()) {
 			final FileConfiguration storage = new YamlConfiguration();
 			try {
 				console.info("Loading players.yml...");
@@ -54,20 +54,20 @@ public final class StorageModule {
 		console.severe("players.yml is missing.");
 		return null;
 	}
-	public static final void saveData(final TheDoctorReborn plugin, final ConsoleModule console, final FileConfiguration regenerationData) {
+	public static final void saveData(final TheDoctorReborn plugin, final ConsoleModule console, final FileConfiguration regenerationData, final boolean announce) {
 		final File storageFile = new File(plugin.getDataFolder(), "players.yml");
-		if(storageFile.exists()) {
+		if(storageFile.exists() && storageFile.isFile()) {
 			try {
-				console.info("Saving players.yml...");
+				if(announce) console.info("Saving players.yml...");
 				regenerationData.save(storageFile);
-				console.info("Saved players.yml.");
+				if(announce) console.info("Saved players.yml.");
 			} catch (final IOException exception) {
 				exception.printStackTrace();
-				console.severe("Could not save the players.yml file.");
+				if(announce) console.severe("Could not save the players.yml file.");
 			}
 			return;
 		}
-		console.severe("players.yml is missing.");
+		if(announce) console.severe("players.yml is missing.");
 	}
 	public static final Object getPlayer(final FileConfiguration regenerationData, final Player player, final DataType section) {
 		if(section.equals(DataType.REGENERATION_NUMBER)) return regenerationData.getInt("players." + player.getUniqueId() + ".regeneration");

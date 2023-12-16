@@ -20,7 +20,8 @@ player-health-level: "Nível de vida:"
 player-food-level: "Nível de fome:"
 player-cycle: "Ciclo regenerativo:"
 symbiotic-nuclei-item: "Depois de beber, seu ciclo regenerativo será reiniciado."
-symbiotic-nuclei-error: "Você não pode beber isso no momento."
+symbiotic-nuclei-error: "Você não tem forças para levar o frasco até sua boca. Sua energia regenerativa te impede de fazer qualquer coisa."
+symbiotic-nuclei-no-effect: "A estranha bebida não apresenta gosto e nem cheiro. Nada fora do comum acontece."
 
 #Não mude isso sob nenhuma circunstância!
-language-version: 1
+language-version: 2

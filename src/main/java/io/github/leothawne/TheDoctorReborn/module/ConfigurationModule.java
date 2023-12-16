@@ -17,6 +17,8 @@
 package io.github.leothawne.TheDoctorReborn.module;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 import org.bukkit.configuration.file.FileConfiguration;
 
@@ -35,7 +37,7 @@ public final class ConfigurationModule {
 	}
 	public static final FileConfiguration load(final TheDoctorReborn plugin, final ConsoleModule console) {
 		final File configFile = new File(plugin.getDataFolder(), "config.yml");
-		if(configFile.exists()) {
+		if(configFile.exists() && configFile.isFile()) {
 			console.info("Loading config.yml...");
 			final FileConfiguration configuration = plugin.getConfig();
 			console.info("Loaded config.yml.");
@@ -46,7 +48,7 @@ public final class ConfigurationModule {
 	}
 	public static final boolean isItOutdated(final TheDoctorReborn plugin) {
 		final File configFile = new File(plugin.getDataFolder(), "config.yml");
-		if(configFile.exists()) {
+		if(configFile.exists() && configFile.isFile()) {
 			final FileConfiguration configuration = plugin.getConfig();
 			if(configuration.getInt("config-version") != Integer.parseInt(DataModule.getVersion(VersionType.CONFIG_YML))) {
 				return true;
@@ -54,9 +56,10 @@ public final class ConfigurationModule {
 		}
 		return true;
 	}
-	public static final boolean deleteFile(final TheDoctorReborn plugin) {
+	public static final boolean makeOldFile(final TheDoctorReborn plugin) {
 		final File configFile = new File(plugin.getDataFolder(), "config.yml");
-		if(configFile.exists()) return configFile.delete();
+		final SimpleDateFormat format = new SimpleDateFormat("HH_mm_ss-yyyy_MM_dd");
+		if(configFile.exists() && configFile.isFile()) return configFile.renameTo(new File(plugin.getDataFolder(), "config-" + format.format(Calendar.getInstance().getTime()) + ".yml"));
 		return false;
 	}
 }

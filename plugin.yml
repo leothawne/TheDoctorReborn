@@ -1,7 +1,7 @@
 name: TheDoctorReborn
 description: Regenerate 12 times as a Time Lord.
-version: 0.3.1
-api-version: 1.14
+version: 0.3.2
+api-version: 1.20
 load: STARTUP
 author: leothawne
 website: https://www.spigotmc.org/resources/60429
