@@ -22,10 +22,7 @@ import io.github.leothawne.TheDoctorReborn.api.MetricsAPI;
 public final class MetricsModule {
 	private MetricsModule() {}
 	public static final MetricsAPI init(final TheDoctorReborn plugin, final ConsoleModule console) {
-		final MetricsAPI metrics = new MetricsAPI(plugin);
-		if(!metrics.isEnabled()) {
-			console.warning(plugin.getDescription().getName() + " has detected that bStats is disabled. Enable it so we can collect data that will help us improve future versions of the plugin. Read more at: https://bstats.org/getting-started");
-		}
+		final MetricsAPI metrics = new MetricsAPI(plugin, 4083);
 		return metrics;
 	}
 }

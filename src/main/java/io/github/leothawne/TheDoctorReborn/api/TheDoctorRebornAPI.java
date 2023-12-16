@@ -37,15 +37,4 @@ public final class TheDoctorRebornAPI {
 	public TheDoctorRebornAPI(final MetricsAPI metrics) {
 		this.metrics = metrics;
 	}
-	/**
-	 * 
-	 * Returns a boolean type value that can be used to determine
-	 * if the plugin is currently using bStats.
-	 * 
-	 * @return A boolean type value.
-	 * 
-	 */
-	public final boolean isMetricsEnabled() {
-		return this.metrics.isEnabled();
-	}
 }
