@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
@@ -25,8 +24,8 @@ public final class SymbioticNucleiItem implements Item {
 		return "Symbiotic Nuclei";
 	}
 	@Override
-	public final List<String> getDescription(final String data, FileConfiguration language) {
-		return Arrays.asList(language.getString("symbiotic-nuclei-item"), "", "Symbiotic Nuclei");
+	public final List<String> getDescription(final String data) {
+		return Arrays.asList(TheDoctorReborn.getInstance().getLanguage().getString("symbiotic-nuclei-item"), "", "Symbiotic Nuclei");
 	}
 	@Override
 	public final ItemType getType() {
@@ -52,19 +51,19 @@ public final class SymbioticNucleiItem implements Item {
 		return null;
 	}
 	@Override
-	public final ItemStack getItem(final String data, FileConfiguration language) {
+	public final ItemStack getItem(final String data) {
 		ItemStack item = new ItemStack(getMaterial());
 		item = NBTModule.setTheDoctorRebornItemTag(item, getType());
 		final ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName(getName());
-		meta.setLore(getDescription(data, language));
+		meta.setLore(getDescription(data));
 		//meta.addEnchant(new GlowManager(), 1, true);
 		item.setItemMeta(meta);
 		return item;
 	}
 	@Override
-	public final Recipe getRecipe(final TheDoctorReborn plugin, final FileConfiguration language) {
-		final ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(plugin, getType().toString().toLowerCase()), getItem(null, language));
+	public final Recipe getRecipe() {
+		final ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(TheDoctorReborn.getInstance(), getType().toString().toLowerCase()), getItem(null));
 		recipe.shape("RNR", "DPD", "ELE");
 		recipe.setIngredient('R', Material.REDSTONE);
 		recipe.setIngredient('N', Material.NETHER_STAR);

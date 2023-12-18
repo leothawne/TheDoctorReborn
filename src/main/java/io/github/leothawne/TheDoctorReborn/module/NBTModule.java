@@ -17,7 +17,7 @@ public final class NBTModule {
 		item = CraftItemStack.asBukkitCopy(nmsItem);
 		return item;
 	}
-	public static final ItemStack setTheDoctorRebornItemTag(ItemStack item, final ItemType type) {
+	public static final ItemStack setTheDoctorRebornItemTag(final ItemStack item, final ItemType type) {
 		return setItemTag(item, "TDRType", type.name());
 	}
 	public static final String getItemTag(final ItemStack item, final String name) {

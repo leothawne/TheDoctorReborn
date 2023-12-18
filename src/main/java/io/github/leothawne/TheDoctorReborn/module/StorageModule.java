@@ -1,19 +1,3 @@
-/*
- * Copyright (C) 2019 Murilo Amaral Nappi
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
- */
 package io.github.leothawne.TheDoctorReborn.module;
 
 import java.io.File;
@@ -29,64 +13,64 @@ import io.github.leothawne.TheDoctorReborn.type.DataType;
 
 public final class StorageModule {
 	private StorageModule() {}
-	public static final void preLoad(final TheDoctorReborn plugin, final ConsoleModule console) {
-		final File storageFile = new File(plugin.getDataFolder(), "players.yml");
+	public static final void preLoad() {
+		final File storageFile = new File(TheDoctorReborn.getInstance().getDataFolder(), "players.yml");
 		if(!storageFile.exists()) {
-			console.info("Creating players.yml...");
-			plugin.saveResource("players.yml", false);
-			console.info("Created players.yml.");
+			TheDoctorReborn.getInstance().getConsole().info("Creating players.yml...");
+			TheDoctorReborn.getInstance().saveResource("players.yml", false);
+			TheDoctorReborn.getInstance().getConsole().info("Created players.yml.");
 		}
 	}
-	public static final FileConfiguration load(final TheDoctorReborn plugin, final ConsoleModule console) {
-		final File storageFile = new File(plugin.getDataFolder(), "players.yml");
+	public static final FileConfiguration load() {
+		final File storageFile = new File(TheDoctorReborn.getInstance().getDataFolder(), "players.yml");
 		if(storageFile.exists() && storageFile.isFile()) {
 			final FileConfiguration storage = new YamlConfiguration();
 			try {
-				console.info("Loading players.yml...");
+				TheDoctorReborn.getInstance().getConsole().info("Loading players.yml...");
 				storage.load(storageFile);
-				console.info("Loaded players.yml.");
+				TheDoctorReborn.getInstance().getConsole().info("Loaded players.yml.");
 				return storage;
 			} catch (final IOException | InvalidConfigurationException exception) {
 				exception.printStackTrace();
 			}
 			return null;
 		}
-		console.severe("players.yml is missing.");
+		TheDoctorReborn.getInstance().getConsole().severe("players.yml is missing.");
 		return null;
 	}
-	public static final void saveData(final TheDoctorReborn plugin, final ConsoleModule console, final FileConfiguration regenerationData, final boolean announce) {
-		final File storageFile = new File(plugin.getDataFolder(), "players.yml");
+	public static final void saveData(final boolean announce) {
+		final File storageFile = new File(TheDoctorReborn.getInstance().getDataFolder(), "players.yml");
 		if(storageFile.exists() && storageFile.isFile()) {
 			try {
-				if(announce) console.info("Saving players.yml...");
-				regenerationData.save(storageFile);
-				if(announce) console.info("Saved players.yml.");
+				if(announce) TheDoctorReborn.getInstance().getConsole().info("Saving players.yml...");
+				TheDoctorReborn.getInstance().getRegenData().save(storageFile);
+				if(announce) TheDoctorReborn.getInstance().getConsole().info("Saved players.yml.");
 			} catch (final IOException exception) {
 				exception.printStackTrace();
-				if(announce) console.severe("Could not save the players.yml file.");
+				if(announce) TheDoctorReborn.getInstance().getConsole().severe("Could not save the players.yml file.");
 			}
 			return;
 		}
-		if(announce) console.severe("players.yml is missing.");
+		if(announce) TheDoctorReborn.getInstance().getConsole().severe("players.yml is missing.");
 	}
-	public static final Object getPlayer(final FileConfiguration regenerationData, final Player player, final DataType section) {
-		if(section.equals(DataType.REGENERATION_NUMBER)) return regenerationData.getInt("players." + player.getUniqueId() + ".regeneration");
-		if(section.equals(DataType.REGENERATION_CYCLE)) return regenerationData.getInt("players." + player.getUniqueId() + ".cycle");
-		if(section.equals(DataType.REGENERATION_LOCKED)) return regenerationData.getBoolean("players." + player.getUniqueId() + ".locked");
+	public static final Object getPlayer(final Player player, final DataType section) {
+		if(section.equals(DataType.REGENERATION_NUMBER)) return TheDoctorReborn.getInstance().getRegenData().getInt("players." + player.getUniqueId() + ".regeneration");
+		if(section.equals(DataType.REGENERATION_CYCLE)) return TheDoctorReborn.getInstance().getRegenData().getInt("players." + player.getUniqueId() + ".cycle");
+		if(section.equals(DataType.REGENERATION_LOCKED)) return TheDoctorReborn.getInstance().getRegenData().getBoolean("players." + player.getUniqueId() + ".locked");
 		return null;
 	}
-	public static final void setPlayer(final FileConfiguration regenerationData, final Player player, final DataType section, final Object value) {
-		if(section.equals(DataType.REGENERATION_NUMBER)) regenerationData.set("players." + player.getUniqueId() + ".regeneration", (int) value);
-		if(section.equals(DataType.REGENERATION_CYCLE)) regenerationData.set("players." + player.getUniqueId() + ".cycle", (int) value);
-		if(section.equals(DataType.REGENERATION_LOCKED)) regenerationData.set("players." + player.getUniqueId() + ".locked", (boolean) value);
+	public static final void setPlayer(final Player player, final DataType section, final Object value) {
+		if(section.equals(DataType.REGENERATION_NUMBER)) TheDoctorReborn.getInstance().getRegenData().set("players." + player.getUniqueId() + ".regeneration", (int) value);
+		if(section.equals(DataType.REGENERATION_CYCLE)) TheDoctorReborn.getInstance().getRegenData().set("players." + player.getUniqueId() + ".cycle", (int) value);
+		if(section.equals(DataType.REGENERATION_LOCKED)) TheDoctorReborn.getInstance().getRegenData().set("players." + player.getUniqueId() + ".locked", (boolean) value);
 	}
-	public static final boolean checkPlayer(final FileConfiguration regenerationData, final Player player) {
-		if(regenerationData.isSet("players." + player.getUniqueId() + ".regeneration") && regenerationData.isSet("players." + player.getUniqueId() + ".cycle") && regenerationData.isSet("players." + player.getUniqueId() + ".locked")) {
+	public static final boolean checkPlayer(final Player player) {
+		if(TheDoctorReborn.getInstance().getRegenData().isSet("players." + player.getUniqueId() + ".regeneration") && TheDoctorReborn.getInstance().getRegenData().isSet("players." + player.getUniqueId() + ".cycle") && TheDoctorReborn.getInstance().getRegenData().isSet("players." + player.getUniqueId() + ".locked")) {
 			return true;
 		} else {
-			StorageModule.setPlayer(regenerationData, player, DataType.REGENERATION_NUMBER, 0);
-			StorageModule.setPlayer(regenerationData, player, DataType.REGENERATION_CYCLE, 1);
-			StorageModule.setPlayer(regenerationData, player, DataType.REGENERATION_LOCKED, false);
+			StorageModule.setPlayer(player, DataType.REGENERATION_NUMBER, 0);
+			StorageModule.setPlayer(player, DataType.REGENERATION_CYCLE, 1);
+			StorageModule.setPlayer(player, DataType.REGENERATION_LOCKED, false);
 			return false;
 		}
 	}
